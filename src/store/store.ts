@@ -1,4 +1,4 @@
-import { auth, googleProvider } from '$lib/firebase';
+import { auth, googleProvider } from '$lib/firebaseConfig';
 import { signInWithPopup } from 'firebase/auth';
 import { writable } from 'svelte/store';
 import type { User } from 'firebase/auth';

@@ -1,11 +1,11 @@
 <script lang="ts">
-	// import type { User } from 'firebase/auth';
-	// import { authStore, authHandlers } from '../store/store';
+	import type { User } from 'firebase/auth';
+	import { authStore, authHandlers } from '../store/store';
 
-	// let currentUser: User | null;
-	// authStore.subscribe((value) => {
-	// 	currentUser = value.user;
-	// });
+	let currentUser: User | null;
+	authStore.subscribe((value) => {
+		currentUser = value.user;
+	});
 </script>
 
 <header class="bg-secondary p-4 flex justify-between items-center text-white">
@@ -19,7 +19,7 @@
 
 	<!-- User/Logout -->
 
-	<!-- {#if currentUser}
+	{#if currentUser}
 		<div class="items-center space-x-2 hidden xl:inline-flex">
 			<img
 				src={currentUser?.photoURL}
@@ -38,5 +38,5 @@
 				>Log Out</button
 			>
 		</div>
-	{/if} -->
+	{/if}
 </header>
