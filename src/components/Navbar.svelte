@@ -1,8 +1,6 @@
 <script lang="ts">
 	import type { User } from 'firebase/auth';
 	import { authStore, authHandlers } from '../store/store';
-	import { doc, getDoc } from 'firebase/firestore';
-	import { db } from '$lib/firebaseConfig';
 	import type { TUser } from '../types';
 
 	let googleUser: User | null;
