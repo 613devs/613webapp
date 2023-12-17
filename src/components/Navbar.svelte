@@ -29,7 +29,7 @@
 		<div class="items-center space-x-2 hidden xl:inline-flex">
 			<div class="flex flex-col">
 				<p>
-					Welcome, <span class="text-orange-500 italic font-bold">
+					Welcome, <span class="text-blue-500 italic font-bold">
 						{dbUser?.userNickname}
 					</span>
 				</p>

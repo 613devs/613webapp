@@ -1,5 +1,4 @@
 <script lang="ts">
-	import github from '$lib/images/github.svg';
     import svelte from '$lib/images/svelte.svg';
 </script>
 
@@ -7,15 +6,10 @@
 	<div class="relative mt-[150px] p-2 lg:ml-[133px] flex">
 		<!-- Main Tagline -->
 		<div class="text-center">
-			<h1 class="text-[32px] font-bold text-white lg:w-[710px]">
-				613
+			<h1 class="text-[64px] font-bold text-white lg:w-[710px]">
+				Home Page
 			</h1>
 		</div>
-		<img
-			src={github}
-			alt="herpic"
-			class="absolute -top-[90px] left-[800px] h-[376px] w-[706px] hidden xl:block"
-		/>
 	</div>
 	<div
 		class="mx-auto max-w-[1500px] flex flex-col items-center mt-[60px] bg-secondary rounded-lg p-10"
