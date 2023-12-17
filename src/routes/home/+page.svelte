@@ -1,14 +1,6 @@
 <script lang="ts">
 	import github from '$lib/images/github.svg';
     import svelte from '$lib/images/svelte.svg';
-	// import { goto } from '$app/navigation';
-	// import type { User } from 'firebase/auth';
-	// import { authHandlers, authStore } from '../../store/store';
-
-	// let currentUser: User | null = null;
-	// authStore.subscribe((value) => {
-	// 	currentUser = value.user;
-	// });
 </script>
 
 <main class="">
@@ -18,18 +10,6 @@
 			<h1 class="text-[32px] font-bold text-white lg:w-[710px]">
 				613
 			</h1>
-			<!-- <div class="flex flex-col px-10 sm:flex-row mt-20 gap-14">
-				<button
-					on:click={() => goto('/create')}
-					class="py-[23px] px-[86px] bg-white text-xl w-[299px] hover:bg-black hover:text-white duration-300 transition-colors"
-					>Create Event</button
-				>
-				<button
-					on:click={() => goto('/eventlist')}
-					class="py-[23px] px-[86px] bg-black text-white text-xl w-[299px] hover:bg-white hover:text-black duration-300 transition-colors"
-					>List of Events</button
-				>
-			</div> -->
 		</div>
 		<img
 			src={github}
