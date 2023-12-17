@@ -1,53 +1,52 @@
-<script>
-	import Header from './Header.svelte';
-	import './styles.css';
+<script lang="ts">
+	import { onMount } from 'svelte';
+	import '../app.css';
+	import Navbar from '../components/Navbar.svelte';
+	import { authStore } from '../store/store';
+	import type { User } from 'firebase/auth';
+	import { auth } from '$lib/firebaseConfig';
+	import { doc, getDoc } from 'firebase/firestore';
+	import { db } from '$lib/firebaseConfig';
+	import type { TUser } from '../types';
+
+	onMount(() => {
+		const unsubscribe = auth.onAuthStateChanged(async (user) => {
+			if (!user) {
+				authStore.update(() => {
+					return {
+						googleUser: null,
+						dbUser: null,
+
+					};
+				});
+			} else {
+				const docRef = doc(db, 'users', user.uid);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+        const dbUser = docSnap.data() as TUser;
+        authStore.update(() => {
+            return {
+                googleUser: user,
+                dbUser: dbUser
+            };
+        });
+    }
+			}
+		});
+		return unsubscribe;
+	});
+
+	let googleUser: User | null;
+	let dbUser: TUser | null;
+	authStore.subscribe((value) => {
+		googleUser = value.googleUser;
+		dbUser = value.dbUser;
+	});
 </script>
 
-<div class="app">
-	<Header />
-
-	<main>
-		<slot />
-	</main>
-
-	<footer>
-		<p>visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to learn SvelteKit</p>
-	</footer>
+<div>
+	{#if googleUser}
+		<Navbar />
+	{/if}
+	<slot />
 </div>
-
-<style>
-	.app {
-		display: flex;
-		flex-direction: column;
-		min-height: 100vh;
-	}
-
-	main {
-		flex: 1;
-		display: flex;
-		flex-direction: column;
-		padding: 1rem;
-		width: 100%;
-		max-width: 64rem;
-		margin: 0 auto;
-		box-sizing: border-box;
-	}
-
-	footer {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		padding: 12px;
-	}
-
-	footer a {
-		font-weight: bold;
-	}
-
-	@media (min-width: 480px) {
-		footer {
-			padding: 12px 0;
-		}
-	}
-</style>
