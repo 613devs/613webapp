@@ -4,6 +4,8 @@
 		"indexes": "firestore.indexes.json"
 	},
 	"hosting": {
+		"site": "stanford613",
+		"public": "public",
 		"source": ".",
 		"ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
 		"frameworksBackend": {
