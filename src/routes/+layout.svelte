@@ -15,22 +15,21 @@
 				authStore.update(() => {
 					return {
 						googleUser: null,
-						dbUser: null,
-
+						dbUser: null
 					};
 				});
 			} else {
 				const docRef = doc(db, 'users', user.uid);
-    const docSnap = await getDoc(docRef);
-    if (docSnap.exists()) {
-        const dbUser = docSnap.data() as TUser;
-        authStore.update(() => {
-            return {
-                googleUser: user,
-                dbUser: dbUser
-            };
-        });
-    }
+				const docSnap = await getDoc(docRef);
+				if (docSnap.exists()) {
+					const dbUser = docSnap.data() as TUser;
+					authStore.update(() => {
+						return {
+							googleUser: user,
+							dbUser: dbUser
+						};
+					});
+				}
 			}
 		});
 		return unsubscribe;
@@ -45,7 +44,7 @@
 </script>
 
 <div>
-	{#if googleUser}
+	{#if googleUser && dbUser}
 		<Navbar />
 	{/if}
 	<slot />

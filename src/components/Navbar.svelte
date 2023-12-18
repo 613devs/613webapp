@@ -7,7 +7,7 @@
 	let dbUser: TUser | null;
 	authStore.subscribe(async (value) => {
 		googleUser = value.googleUser;
-		dbUser = value.dbUser
+		dbUser = value.dbUser;
 	});
 </script>
 
