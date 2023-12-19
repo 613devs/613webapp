@@ -3,6 +3,7 @@
 	"version": "0.0.1",
 	"scripts": {
 		"dev": "vite dev",
+		"emulate": "firebase emulators:start",
 		"build": "vite build",
 		"preview": "vite preview",
 		"test": "npm run test:integration && npm run test:unit",
@@ -26,6 +27,7 @@
 		"eslint": "^8.28.0",
 		"eslint-config-prettier": "^9.0.0",
 		"eslint-plugin-svelte": "^2.30.0",
+		"firebase-tools": "^13.0.2",
 		"postcss": "^8.4.32",
 		"prettier": "^3.0.0",
 		"prettier-plugin-svelte": "^3.0.0",
