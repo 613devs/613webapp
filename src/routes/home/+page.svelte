@@ -1,14 +1,12 @@
 <script lang="ts">
-    import svelte from '$lib/images/svelte.svg';
+	import svelte from '$lib/images/svelte.svg';
 </script>
 
 <main class="">
 	<div class="relative mt-[150px] p-2 lg:ml-[133px] flex">
 		<!-- Main Tagline -->
 		<div class="text-center">
-			<h1 class="text-[64px] font-bold text-white lg:w-[710px]">
-				Home Page
-			</h1>
+			<h1 class="text-[64px] font-bold text-white lg:w-[710px]">Home Page</h1>
 		</div>
 	</div>
 	<div
