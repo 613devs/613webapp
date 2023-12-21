@@ -11,7 +11,7 @@ export const authStore = writable<{
 	dbUser: TUser | null;
 }>({
 	googleUser: null,
-	dbUser: null
+	dbUser: null,
 });
 
 export const authHandlers = {
@@ -19,7 +19,7 @@ export const authHandlers = {
 		await auth.signOut();
 		authStore.set({
 			googleUser: null,
-			dbUser: null
+			dbUser: null,
 		});
 		goto('/');
 	},
@@ -36,7 +36,7 @@ export const authHandlers = {
 			const newUser: TUser = {
 				userNickname: firstName,
 				userRole: 'member',
-				userRating: 1000
+				userRating: 1000,
 			};
 			await setDoc(docRef, newUser);
 		}
@@ -44,6 +44,6 @@ export const authHandlers = {
 		const dbUser = (await getDoc(docRef)).data() as TUser;
 		authStore.set({ googleUser, dbUser });
 
-		goto('/home');
-	}
+		goto('/');
+	},
 };

@@ -11,37 +11,32 @@
 	});
 </script>
 
-<header class="bg-secondary p-4 flex justify-between items-center text-white">
-	<!-- o -->
-	<h1 class=" font-bold text-sm md:text-2xl tracking-widest">La Casa de Carne | 613 Stanford Dr</h1>
-	<!-- links -->
-	<div class="flex items-center space-x-10 font-semibold">
-		<a href="/home">Home</a>
-		<a href="/blog" data-sveltekit-preload-data>Blog</a>
-		<a href="/pool" data-sveltekit-preload-data>Pool</a>
+<header class="navbar">
+	<div class="navbar-start prose">
+		<h1>613 Stanford Dr</h1>
 	</div>
 
-	<!-- User/Logout -->
+	<div class="navbar-center">
+		<a class="btn" href="/">Home</a>
+		<a class="btn" href="/blog" data-sveltekit-preload-data>Blog</a>
+		<a class="btn" href="/pool" data-sveltekit-preload-data>Pool</a>
+	</div>
 
-	{#if googleUser}
-		<div class="items-center space-x-2 hidden xl:inline-flex">
-			<div class="flex flex-col">
-				<p>
-					Welcome, <span class="text-blue-500 italic font-bold">
-						{dbUser?.userNickname}
-					</span>
-				</p>
-			</div>
-			<a href="/profile">
+	<div class="navbar-end space-x-1">
+		{#if googleUser && dbUser}
+			<a class="btn-circle" href="/profile">
 				<img
-					src={googleUser?.photoURL}
+					src={googleUser.photoURL || 'https://source.unsplash.com/random'}
 					alt={googleUser?.displayName}
 					class="h-12 w-12 rounded-full"
 				/>
 			</a>
-			<button on:click={authHandlers.logout} class="bg-white p-2 rounded-full text-black"
-				>Log Out</button
-			>
-		</div>
-	{/if}
+			<button on:click={authHandlers.logout} class="btn">Log Out</button>
+		{:else}
+			<button on:click={authHandlers.loginWithGoogle} class="btn">
+				<i class="fa-brands fa-google fa-xl" style="color: #eb4d27;" />
+				Sign In with Google
+			</button>
+		{/if}
+	</div>
 </header>
