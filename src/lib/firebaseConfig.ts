@@ -3,7 +3,6 @@
 import { deleteApp, getApps, initializeApp, type FirebaseApp } from 'firebase/app';
 import { connectFirestoreEmulator, getFirestore } from 'firebase/firestore';
 import { GoogleAuthProvider, connectAuthEmulator, getAuth } from 'firebase/auth';
-import { getStorage } from 'firebase/storage';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -30,12 +29,11 @@ if (!getApps().length) {
 	firebaseApp = initializeApp(firebaseConfig);
 }
 
-export const db = getFirestore(firebaseApp);
+export const firestore = getFirestore(firebaseApp);
 export const auth = getAuth(firebaseApp);
 if (typeof location !== 'undefined' && location.hostname === 'localhost') {
-	connectFirestoreEmulator(db, 'localhost', 8080);
+	connectFirestoreEmulator(firestore, 'localhost', 8080);
 	connectAuthEmulator(auth, 'http://localhost:9099');
 }
-export const storage = getStorage(firebaseApp);
 
 export const googleProvider = new GoogleAuthProvider();

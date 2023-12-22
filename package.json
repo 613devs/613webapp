@@ -43,6 +43,7 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"firebase": "^10.7.1"
+		"firebase": "^10.7.1",
+		"sveltefire": "^0.4.3"
 	}
 }

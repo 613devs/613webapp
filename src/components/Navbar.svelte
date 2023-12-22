@@ -1,14 +1,9 @@
 <script lang="ts">
-	import type { User } from 'firebase/auth';
-	import { authStore, authHandlers } from '../store/store';
-	import type { TUser } from '../types';
+	import { auth, googleProvider } from '$lib/firebaseConfig';
+	import { signInWithPopup } from 'firebase/auth';
+	import { userStore } from 'sveltefire';
 
-	let googleUser: User | null;
-	let dbUser: TUser | null;
-	authStore.subscribe(async (value) => {
-		googleUser = value.googleUser;
-		dbUser = value.dbUser;
-	});
+	const user = userStore(auth);
 </script>
 
 <header class="navbar">
@@ -23,17 +18,17 @@
 	</div>
 
 	<div class="navbar-end space-x-1">
-		{#if googleUser && dbUser}
+		{#if $user}
 			<a class="btn-circle" href="/profile">
 				<img
-					src={googleUser.photoURL || 'https://source.unsplash.com/random'}
-					alt={googleUser?.displayName}
+					src={$user.photoURL || 'https://source.unsplash.com/random'}
+					alt={$user.displayName}
 					class="h-12 w-12 rounded-full"
 				/>
 			</a>
-			<button on:click={authHandlers.logout} class="btn">Log Out</button>
+			<button on:click={() => auth.signOut()} class="btn">Log Out</button>
 		{:else}
-			<button on:click={authHandlers.loginWithGoogle} class="btn">
+			<button on:click={() => signInWithPopup(auth, googleProvider)} class="btn">
 				<i class="fa-brands fa-google fa-xl" style="color: #eb4d27;" />
 				Sign In with Google
 			</button>
