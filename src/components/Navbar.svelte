@@ -1,42 +1,39 @@
 <script lang="ts">
-	import type { User } from 'firebase/auth';
-	import { authStore, authHandlers } from '../store/store';
-	import type { TUser } from '../types';
+	import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+	import { getFirebaseContext, userStore } from 'sveltefire';
+	const { auth } = getFirebaseContext();
 
-	let googleUser: User | null;
-	let dbUser: TUser | null;
-	authStore.subscribe(async (value) => {
-		googleUser = value.googleUser;
-		dbUser = value.dbUser;
-	});
+	const user = userStore(auth!);
 </script>
 
-<header class="navbar">
-	<div class="navbar-start prose">
-		<h1>613 Stanford Dr</h1>
-	</div>
+{#if auth}
+	<header class="navbar">
+		<div class="navbar-start prose">
+			<h1>613 Stanford Dr</h1>
+		</div>
 
-	<div class="navbar-center">
-		<a class="btn" href="/">Home</a>
-		<a class="btn" href="/blog" data-sveltekit-preload-data>Blog</a>
-		<a class="btn" href="/pool" data-sveltekit-preload-data>Pool</a>
-	</div>
+		<div class="navbar-center">
+			<a class="btn" href="/">Home</a>
+			<a class="btn" href="/blog" data-sveltekit-preload-data>Blog</a>
+			<a class="btn" href="/pool" data-sveltekit-preload-data>Pool</a>
+		</div>
 
-	<div class="navbar-end space-x-1">
-		{#if googleUser && dbUser}
-			<a class="btn-circle" href="/profile">
-				<img
-					src={googleUser.photoURL || 'https://source.unsplash.com/random'}
-					alt={googleUser?.displayName}
-					class="h-12 w-12 rounded-full"
-				/>
-			</a>
-			<button on:click={authHandlers.logout} class="btn">Log Out</button>
-		{:else}
-			<button on:click={authHandlers.loginWithGoogle} class="btn">
-				<i class="fa-brands fa-google fa-xl" style="color: #eb4d27;" />
-				Sign In with Google
-			</button>
-		{/if}
-	</div>
-</header>
+		<div class="navbar-end space-x-1">
+			{#if $user}
+				<a class="btn-circle" href="/profile">
+					<img
+						src={$user?.photoURL || 'https://source.unsplash.com/random'}
+						alt={$user?.displayName}
+						class="h-12 w-12 rounded-full"
+					/>
+				</a>
+				<button on:click={() => auth.signOut()} class="btn">Log Out</button>
+			{:else}
+				<button on:click={() => signInWithPopup(auth, new GoogleAuthProvider())} class="btn">
+					<i class="fa-brands fa-google fa-xl" style="color: #eb4d27;" />
+					Sign In with Google
+				</button>
+			{/if}
+		</div>
+	</header>
+{/if}
