@@ -4,9 +4,10 @@
 	import '../app.css';
 	import Navbar from '../components/Navbar.svelte';
 	import { connectFirestoreEmulator, getFirestore } from 'firebase/firestore';
-	import { connectAuthEmulator, getAuth } from 'firebase/auth';
+	import { connectAuthEmulator, getAuth, onAuthStateChanged } from 'firebase/auth';
 	import { getDatabase } from 'firebase/database';
 	import { getStorage } from 'firebase/storage';
+	import { writable } from 'svelte/store';
 
 	const app = initializeApp({
 		apiKey: import.meta.env.VITE_API_KEY,
@@ -25,9 +26,19 @@
 	}
 	const rtdb = getDatabase(app);
 	const storage = getStorage(app);
+
+	const isAuthLoading = writable(true);
+
+	onAuthStateChanged(auth, () => {
+		isAuthLoading.set(false);
+	});
 </script>
 
-<FirebaseApp {firestore} {auth} {rtdb} {storage}>
-	<Navbar />
-	<slot />
-</FirebaseApp>
+{#if $isAuthLoading}
+	<p>Loading...</p>
+{:else}
+	<FirebaseApp {firestore} {auth} {rtdb} {storage}>
+		<Navbar />
+		<slot />
+	</FirebaseApp>
+{/if}

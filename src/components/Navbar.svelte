@@ -4,6 +4,8 @@
 	const { auth } = getFirebaseContext();
 
 	const user = userStore(auth!);
+
+	console.log($user?.uid);
 </script>
 
 {#if auth}
