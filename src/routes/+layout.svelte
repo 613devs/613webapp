@@ -35,7 +35,7 @@
 </script>
 
 {#if $isAuthLoading}
-	<p>Loading...</p>
+	<progress class="progress" />
 {:else}
 	<FirebaseApp {firestore} {auth} {rtdb} {storage}>
 		<Navbar />
