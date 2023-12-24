@@ -3,10 +3,11 @@
 	import { doc, getDoc, setDoc } from 'firebase/firestore';
 	import { getFirebaseContext, userStore, docStore } from 'sveltefire';
 	import type { TUser } from '../types';
+	import { readable } from 'svelte/store';
 
 	const { auth, firestore } = getFirebaseContext();
 	const user = userStore(auth!);
-	let dbUser: DocStore<TUser>;
+	let dbUser: any;
 
 	const signInWithGoogle = async () => {
 		try {
