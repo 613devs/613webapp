@@ -6,32 +6,32 @@
 
 	const { auth, firestore } = getFirebaseContext();
 	const user = userStore(auth!);
-	let dbUser : DocStore<TUser>;
+	let dbUser: DocStore<TUser>;
 
 	const signInWithGoogle = async () => {
-        try {
+		try {
 			await signInWithPopup(auth!, new GoogleAuthProvider());
 			// Check if dbUser already exists
-			const docRef = doc(firestore!, 'users', $user!.uid)
+			const docRef = doc(firestore!, 'users', $user!.uid);
 			const docSnap = await getDoc(docRef);
 			if (!docSnap.exists()) {
 				// Create new user
 				const firstName = $user?.displayName?.split(' ')[0] ?? 'Anonymous';
-				const newUser : TUser = {
+				const newUser: TUser = {
 					userNickname: firstName,
 					userRole: 'member',
 					userRating: 1000,
 					userWins: 0,
 					userGames: 0,
-					userStreak: 0
-				}
+					userStreak: 0,
+				};
 				await setDoc(docRef, newUser);
 			}
 			dbUser = docStore<TUser>(firestore!, `users/${$user?.uid}`);
-        } catch (error) {
-            console.error("Error signing in with Google", error);
-        }
-    };
+		} catch (error) {
+			console.error('Error signing in with Google', error);
+		}
+	};
 </script>
 
 {#if auth}
