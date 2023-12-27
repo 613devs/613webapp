@@ -1,8 +1,8 @@
 <script lang="ts">
-	import { Doc, getFirebaseContext, userStore } from 'sveltefire';
+	import { getFirebaseContext, userStore } from 'sveltefire';
 
 	const { auth } = getFirebaseContext();
-	const user = userStore(auth!);
+	// const user = userStore(auth!);
 </script>
 
 <main>
