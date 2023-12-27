@@ -15,7 +15,11 @@ const app = initializeApp({
 });
 export const firestore = getFirestore(app);
 export const auth = getAuth(app);
-if (typeof location !== 'undefined' && location.hostname === 'localhost') {
+if (
+	import.meta.env.MODE !== 'test' &&
+	typeof location !== 'undefined' &&
+	location.hostname === 'localhost'
+) {
 	connectFirestoreEmulator(firestore, 'localhost', 8080);
 	connectAuthEmulator(auth, 'http://localhost:9099');
 }

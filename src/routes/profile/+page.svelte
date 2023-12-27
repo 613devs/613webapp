@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Doc, getFirebaseContext, userStore } from 'sveltefire';
-	import { logout } from '$lib/helpers/auth';
+	import { logout } from '$lib/utils/auth';
 
 	const { auth } = getFirebaseContext();
 	const user = userStore(auth!);
