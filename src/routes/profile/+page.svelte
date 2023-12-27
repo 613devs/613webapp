@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Doc, getFirebaseContext, userStore } from 'sveltefire';
-    import {logout } from '$lib/helpers/auth';
+	import { logout } from '$lib/helpers/auth';
 
 	const { auth } = getFirebaseContext();
 	const user = userStore(auth!);
@@ -14,6 +14,6 @@
 				{data.role} since {data.created_dt.toDate().toLocaleDateString()}
 			</p>
 		</div>
-        <button on:click={logout} class="btn bg-neutral-content">Log Out</button>
+		<button on:click={logout} class="btn bg-neutral-content">Log Out</button>
 	</div>
 </Doc>
