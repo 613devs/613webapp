@@ -1,18 +1,13 @@
 import type { User } from 'firebase/auth';
 import { vi } from 'vitest';
-import type { Auth } from 'firebase/auth';
 import type { TProfile } from '../types';
 import MockDoc from './__mocks__/MockDoc.svelte';
+import MockSignedIn from './__mocks__/MockSignedIn.svelte';
+import MockSignedOut from './__mocks__/MockSignedOut.svelte';
 
-vi.mock('sveltefire', async (importOriginal) => {
-	const mod = await importOriginal<typeof import('sveltefire')>();
-	return {
-		...mod,
-		getFirebaseContext: () => ({ auth: {} as Auth }),
-		Doc: MockDoc,
-		userStore: vi.fn(),
-	};
-});
+export const mockState = {
+	isUserSignedIn: true,
+};
 
 export const mockProfile: TProfile = {
 	username: 'test user',
@@ -39,3 +34,11 @@ export const mockUser: User = {
 	phoneNumber: '+1234567890',
 	providerId: 'firebase',
 };
+
+vi.mock('sveltefire', () => {
+	return {
+		Doc: MockDoc,
+		SignedIn: MockSignedIn,
+		SignedOut: MockSignedOut,
+	};
+});

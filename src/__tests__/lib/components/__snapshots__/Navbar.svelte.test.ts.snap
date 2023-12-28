@@ -84,9 +84,13 @@ exports[`Navbar.svelte > should render logged in 1`] = `
           Log Out
         </button>
         <!--&lt;MockDoc&gt;-->
+        
+        <!--&lt;MockSignedIn&gt;-->
+         
+        
+        <!--&lt;MockSignedOut&gt;-->
       </div>
     </header>
-    
     <!--&lt;Navbar&gt;-->
   </div>
 </body>
@@ -148,6 +152,9 @@ exports[`Navbar.svelte > should render logged out 1`] = `
       <div
         class="navbar-end space-x-1"
       >
+        
+        <!--&lt;MockSignedIn&gt;-->
+         
         <button
           class="btn"
         >
@@ -156,11 +163,12 @@ exports[`Navbar.svelte > should render logged out 1`] = `
             style="color: rgb(235, 77, 39);"
           />
           
-					Sign In with Google
+				Sign In with Google
         </button>
+        
+        <!--&lt;MockSignedOut&gt;-->
       </div>
     </header>
-    
     <!--&lt;Navbar&gt;-->
   </div>
 </body>
