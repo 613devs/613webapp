@@ -1,14 +1,12 @@
-// exponentDemoninator = 400
-// exponentBase = 10
-// kFactor = 32
+const EXPONENT_DENOMINATOR = 400;
+const EXPONENT_BASE = 10;
+const K_FACTOR = 32;
 
-// given rating difference, calculate expected win probability
 const calculateExpectedProbability = (ratingDifference: number) => {
-	const exponent = ratingDifference / 400;
-	return 1 / (1 + Math.pow(10, exponent));
+	const exponent = ratingDifference / EXPONENT_DENOMINATOR;
+	return 1 / (1 + Math.pow(EXPONENT_BASE, exponent));
 };
 
-// given two player ratings, return expected win probabilities and rating differences
 const calculateMatchProbability = (playerARating: number, playerBRating: number) => {
 	const ratingADifference = playerBRating - playerARating;
 	const ratingBDifference = playerARating - playerBRating;
@@ -19,14 +17,12 @@ const calculateMatchProbability = (playerARating: number, playerBRating: number)
 	return [playerAExpectedProbability, playerBExpectedProbability];
 };
 
-// given player rating, result, and expected win probability, return new rating and rating change
 const calculateNewRating = (rating: number, result: number, expectedProbability: number) => {
-	const change = Math.round(32 * (result - expectedProbability));
+	const change = Math.round(K_FACTOR * (result - expectedProbability));
 	const newRating = rating + change;
 	return [newRating, change];
 };
 
-// given two player ratings and result, return new ratings and rating changes
 export const calculateNewRatings = (
 	playerARating: number,
 	playerBRating: number,
