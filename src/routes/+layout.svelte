@@ -1,7 +1,7 @@
 <script lang="ts">
 	import '../app.css';
 	import { FirebaseApp } from 'sveltefire';
-	import Navbar from '../components/Navbar.svelte';
+	import Navbar from '$lib/components/Navbar.svelte';
 	import { onAuthStateChanged } from 'firebase/auth';
 	import { writable } from 'svelte/store';
 	import { auth, firestore, rtdb, storage } from '$lib/firebase';

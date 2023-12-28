@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Doc, getFirebaseContext, userStore } from 'sveltefire';
-	import { login, logout } from '$lib/helpers/auth';
+	import { login, logout } from '$lib/utils/auth';
 
 	const { auth } = getFirebaseContext();
 	const user = userStore(auth!);
@@ -31,11 +31,7 @@
 						</span>
 					</p>
 					<a class="btn-circle" href="/profile">
-						<img
-							src={$user?.photoURL || 'https://source.unsplash.com/random'}
-							alt={$user?.displayName}
-							class="h-12 w-12 rounded-full"
-						/>
+						<img src={$user?.photoURL} alt={$user?.displayName} class="h-12 w-12 rounded-full" />
 					</a>
 					<button on:click={logout} class="btn hidden md:block">Log Out</button>
 				</Doc>
