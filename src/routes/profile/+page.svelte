@@ -45,12 +45,27 @@
 		</div>
 		<div class="w-1/2 rounded-badge flex flex-col items-center py-5 bg-accent-content">
 			<h3 class="text-3xl font-semibold">Pool Statistics</h3>
+			<p class="text-xl">Games Played: 0</p>
+			<p class="text-xl">Games Won: 0</p>
+			<p class="text-xl">Win Percentage: --</p>
 		</div>
 		<div class="w-1/2 rounded-badge flex flex-col items-center py-5 bg-accent-content">
 			<h3 class="text-3xl font-semibold">Rating History</h3>
+			<p class="text-xl">graph</p>
 		</div>
-		<div class="w-1/2 rounded-badge flex flex-col items-center py-5 bg-accent-content">
-			<h3 class="text-3xl font-semibold">10 most recent games</h3>
+		<div class="w-1/2 rounded-badge flex flex-col items-center py-5 px-10 gap-2 bg-accent-content">
+			<h3 class="text-3xl font-semibold">Recent games</h3>
+			<div class="w-full flex flex-row justify-between px-10 py-3 rounded-box bg-primary-content">
+				<div class="w-1/3 flex items-center justify-center rounded-badge bg-green-300">
+					<p class="text-black font-semibold">Player A (1000)</p>
+				</div>
+				<div class="p-2 rounded-box text-center bg-secondary-content">
+					<p>1 - 0</p>
+				</div>
+				<div class="w-1/3 flex items-center justify-center rounded-badge bg-red-400">
+					<p class="text-black font-semibold">Player B (1000)</p>
+				</div>
+			</div>
 		</div>
 		<button on:click={logout} class="btn bg-accent-content">Log Out</button>
 	</SignedIn>
