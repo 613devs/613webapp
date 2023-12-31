@@ -8,12 +8,13 @@
 	const user = userStore(auth!);
 
 	let isEditingUsername = false;
-	let username = '';
+	let newUsername = '';
 
 	const changeUsername = async () => {
 		const profileRef = doc(firestore, 'profiles', $user!.uid);
-		await updateDoc(profileRef, { username });
+		await updateDoc(profileRef, { username: newUsername });
 		isEditingUsername = false;
+		newUsername = '';
 	};
 </script>
 
@@ -28,7 +29,7 @@
 							type="text"
 							placeholder="Enter new username"
 							maxlength="20"
-							bind:value={username}
+							bind:value={newUsername}
 							on:keydown={(event) => event.key === 'Enter' && changeUsername()}
 						/>
 					{:else}
@@ -43,11 +44,22 @@
 				</p>
 			</Doc>
 		</div>
-		<div class="w-1/2 rounded-badge flex flex-col items-center py-5 bg-accent-content">
+		<div class="w-1/2 rounded-badge flex flex-col items-center py-5 px-10 gap-2 bg-accent-content">
 			<h3 class="text-3xl font-semibold">Pool Statistics</h3>
-			<p class="text-xl">Games Played: 0</p>
-			<p class="text-xl">Games Won: 0</p>
-			<p class="text-xl">Win Percentage: --</p>
+			<div class="w-full flex flex-row justify-between">
+				<div class="flex flex-col w-1/4 items-center p-5 rounded-box bg-primary-content">
+					<h1 class="text-6xl">0</h1>
+					<p>Games Played</p>
+				</div>
+				<div class="flex flex-col w-1/4 items-center p-5 rounded-box bg-primary-content">
+					<h1 class="text-6xl">0</h1>
+					<p>Games Won</p>
+				</div>
+				<div class="flex flex-col w-1/4 items-center p-5 rounded-box bg-primary-content">
+					<h1 class="text-6xl">--</h1>
+					<p>Win %</p>
+				</div>
+			</div>
 		</div>
 		<div class="w-1/2 rounded-badge flex flex-col items-center py-5 bg-accent-content">
 			<h3 class="text-3xl font-semibold">Rating History</h3>
