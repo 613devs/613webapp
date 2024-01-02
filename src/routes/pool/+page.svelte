@@ -8,6 +8,13 @@
 	const user = userStore(auth!);
 
 	let showModal = false;
+	let winnerUsers: HTMLDetailsElement;
+	let loserUsers: HTMLDetailsElement;
+	let winnerName = 'Select a winner';
+	let loserName = 'Select a loser';
+
+	let winnerUID: string;
+	let loserUID: string;
 
 	const logMatch = async () => {
 		const matchesRef = collection(firestore, 'matches');
@@ -26,6 +33,8 @@
 		};
 
 		await addDoc(matchesRef, newMatch);
+
+		// reset values
 	};
 </script>
 
@@ -38,8 +47,56 @@
 			<div slot="header">
 				<h3 class="text-2xl">Match Results</h3>
 			</div>
-			<div class="flex flex-col items-center">
-				<button on:click={logMatch} class="btn bg-accent-content">Submit</button>
+			<div class="flex flex-col">
+				<div>
+					<i class="fas fa-crown" />
+					<details class="dropdown" bind:this={winnerUsers}>
+						<summary class="m-1 btn bg-green-300 text-black">{winnerName}</summary>
+						<ul class="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52">
+							<li>
+								<a
+									on:click={() => {
+										winnerName = 'Item 1';
+										winnerUsers.removeAttribute('open');
+									}}>Item 1</a
+								>
+							</li>
+							<li>
+								<a
+									on:click={() => {
+										winnerName = 'Item 2';
+										winnerUsers.removeAttribute('open');
+									}}>Item 2</a
+								>
+							</li>
+						</ul>
+					</details>
+				</div>
+				<div>
+					<i class="fas fa-poop" />
+					<details class="dropdown" bind:this={loserUsers}>
+						<summary class="m-1 btn bg-red-400 text-black">{loserName}</summary>
+						<ul class="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52">
+							<li>
+								<a
+									on:click={() => {
+										loserName = 'Item 1';
+										loserUsers.removeAttribute('open');
+									}}>Item 1</a
+								>
+							</li>
+							<li>
+								<a
+									on:click={() => {
+										loserName = 'Item 2';
+										loserUsers.removeAttribute('open');
+									}}>Item 2</a
+								>
+							</li>
+						</ul>
+					</details>
+				</div>
+				<button on:click={logMatch} class="btn bg-accent-content self-center">Submit</button>
 			</div>
 		</Modal>
 	</SignedIn>
