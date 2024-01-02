@@ -83,19 +83,19 @@
 						<summary class="m-1 btn">{winnerName}</summary>
 						<ul class="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52">
 							<li>
-								<a
+								<button
 									on:click={() => {
 										winnerName = 'Player A';
 										winnerUsers.removeAttribute('open');
-									}}>Player A</a
+									}}>Player A</button
 								>
 							</li>
 							<li>
-								<a
+								<button
 									on:click={() => {
 										winnerName = 'Player B';
 										winnerUsers.removeAttribute('open');
-									}}>Player B</a
+									}}>Player B</button
 								>
 							</li>
 						</ul>
@@ -107,19 +107,19 @@
 						<summary class="m-1 btn">{loserName}</summary>
 						<ul class="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52">
 							<li>
-								<a
+								<button
 									on:click={() => {
 										loserName = 'Player A';
 										loserUsers.removeAttribute('open');
-									}}>Player A</a
+									}}>Player A</button
 								>
 							</li>
 							<li>
-								<a
+								<button
 									on:click={() => {
 										loserName = 'Player B';
 										loserUsers.removeAttribute('open');
-									}}>Player B</a
+									}}>Player B</button
 								>
 							</li>
 						</ul>
