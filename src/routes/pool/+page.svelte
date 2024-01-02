@@ -23,9 +23,12 @@
 	import { Doc, SignedIn, SignedOut, getFirebaseContext, userStore } from 'sveltefire';
 	import { addDoc, collection, doc, updateDoc } from 'firebase/firestore';
 	import { firestore } from '$lib/firebase';
+	import Modal from '../../lib/components/Modal.svelte';
 
 	const { auth } = getFirebaseContext();
 	const user = userStore(auth!);
+
+	let showModal = false;
 
 	const logMatch = async () => {
 		const matchesRef = collection(firestore, 'matches');
@@ -49,9 +52,17 @@
 
 <div class="flex flex-col items-center py-5 px-10 gap-5 min-h-screen bg-base-200">
 	<SignedIn let:user>
-		<button class="btn btn-wide bg-accent-content" on:click={logMatch}>
+		<button class="btn btn-wide bg-accent-content" on:click={() => (showModal = true)}>
 			<i class="fa-solid fa-plus fa-lg" />
 		</button>
+		<Modal bind:showModal>
+			<div slot="header">
+				<h3 class="text-2xl">Match Results</h3>
+			</div>
+			<div class="flex flex-col items-center">
+				<button on:click={logMatch} class="btn bg-accent-content">Submit</button>
+			</div>
+		</Modal>
 	</SignedIn>
 	<div class="w-full px-30 py-5 flex flex-col gap-10 min-h-screen">
 		<div class="bg-accent-content h-80 rounded-badge flex flex-col items-center">
