@@ -8,6 +8,7 @@
 	const user = userStore(auth!);
 
 	let showModal = false;
+	let hideModal = false;
 	let winnerUsers: HTMLDetailsElement;
 	let loserUsers: HTMLDetailsElement;
 	let winnerName = 'Select a winner';
@@ -31,42 +32,49 @@
 			winnerRating,
 			loserRating,
 		};
-
 		await addDoc(matchesRef, newMatch);
 
-		// reset values
+		hideModal = true;
+		winnerName = 'Select a winner';
+		loserName = 'Select a loser';
 	};
 </script>
 
 <div class="flex flex-col items-center py-5 px-10 gap-5 min-h-screen bg-base-200">
 	<SignedIn let:user>
-		<button class="btn btn-wide bg-accent-content" on:click={() => (showModal = true)}>
+		<button
+			class="btn btn-wide bg-accent-content"
+			on:click={() => {
+				showModal = true;
+				hideModal = false;
+			}}
+		>
 			<i class="fa-solid fa-plus fa-lg" />
 		</button>
-		<Modal bind:showModal>
+		<Modal bind:showModal bind:hideModal>
 			<div slot="header">
 				<h3 class="text-2xl">Match Results</h3>
 			</div>
-			<div class="flex flex-col">
+			<div class="flex flex-col pt-3 gap-3">
 				<div>
 					<i class="fas fa-crown" />
 					<details class="dropdown" bind:this={winnerUsers}>
-						<summary class="m-1 btn bg-green-300 text-black">{winnerName}</summary>
+						<summary class="m-1 btn">{winnerName}</summary>
 						<ul class="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52">
 							<li>
 								<a
 									on:click={() => {
-										winnerName = 'Item 1';
+										winnerName = 'Player A';
 										winnerUsers.removeAttribute('open');
-									}}>Item 1</a
+									}}>Player A</a
 								>
 							</li>
 							<li>
 								<a
 									on:click={() => {
-										winnerName = 'Item 2';
+										winnerName = 'Player B';
 										winnerUsers.removeAttribute('open');
-									}}>Item 2</a
+									}}>Player B</a
 								>
 							</li>
 						</ul>
@@ -75,22 +83,22 @@
 				<div>
 					<i class="fas fa-poop" />
 					<details class="dropdown" bind:this={loserUsers}>
-						<summary class="m-1 btn bg-red-400 text-black">{loserName}</summary>
+						<summary class="m-1 btn">{loserName}</summary>
 						<ul class="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52">
 							<li>
 								<a
 									on:click={() => {
-										loserName = 'Item 1';
+										loserName = 'Player A';
 										loserUsers.removeAttribute('open');
-									}}>Item 1</a
+									}}>Player A</a
 								>
 							</li>
 							<li>
 								<a
 									on:click={() => {
-										loserName = 'Item 2';
+										loserName = 'Player B';
 										loserUsers.removeAttribute('open');
-									}}>Item 2</a
+									}}>Player B</a
 								>
 							</li>
 						</ul>
