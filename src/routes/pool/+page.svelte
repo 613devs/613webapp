@@ -22,11 +22,10 @@
 	</table>
 	import { Doc, SignedIn, SignedOut, getFirebaseContext, userStore } from 'sveltefire';
 	import { addDoc, collection, doc, updateDoc } from 'firebase/firestore';
+	import { SignedIn } from 'sveltefire';
+	import { addDoc, collection } from 'firebase/firestore';
 	import { firestore } from '$lib/firebase';
 	import Modal from '../../lib/components/Modal.svelte';
-
-	const { auth } = getFirebaseContext();
-	const user = userStore(auth!);
 
 	let showModal = false;
 	let hideModal = false;
@@ -34,9 +33,6 @@
 	let loserUsers: HTMLDetailsElement;
 	let winnerName = 'Select a winner';
 	let loserName = 'Select a loser';
-
-	let winnerUID: string;
-	let loserUID: string;
 
 	const logMatch = async () => {
 		const matchesRef = collection(firestore, 'matches');
@@ -62,7 +58,7 @@
 </script>
 
 <div class="flex flex-col items-center py-5 px-10 gap-5 min-h-screen bg-base-200">
-	<SignedIn let:user>
+	<SignedIn>
 		<button
 			class="btn btn-wide bg-accent-content"
 			on:click={() => {
