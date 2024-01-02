@@ -3,7 +3,11 @@
 	import { addDoc, collection } from 'firebase/firestore';
 	import { firestore } from '$lib/firebase';
 	import Modal from '../../lib/components/Modal.svelte';
+	import type { PageData } from './$types';
 
+	export let data: PageData;
+
+	// logging a match
 	let showModal = false;
 	let hideModal = false;
 	let winnerUsers: HTMLDetailsElement;
@@ -14,17 +18,12 @@
 	const logMatch = async () => {
 		const matchesRef = collection(firestore, 'matches');
 
-		let winnerUID = 'A';
-		let loserUID = 'B';
-		let winnerRating = 1000;
-		let loserRating = 1000;
-
 		const newMatch = {
 			match_dt: new Date(),
-			winnerUID,
-			loserUID,
-			winnerRating,
-			loserRating,
+			winnerUID: 'A',
+			loserUID: 'B',
+			winnerRating: 1000,
+			loserRating: 1100,
 		};
 		await addDoc(matchesRef, newMatch);
 
@@ -114,4 +113,16 @@
 			</div>
 		</div>
 	</div>
+	<table class="table">
+		<tr class="prose">
+			<th class="text-left">username</th>
+			<th class="text-right">rating</th>
+		</tr>
+		{#each data.profiles as profile}
+			<tr class="hover prose">
+				<td class="text-left">{profile.username}</td>
+				<td class="text-right">{profile.rating}</td>
+			</tr>
+		{/each}
+	</table>
 </div>

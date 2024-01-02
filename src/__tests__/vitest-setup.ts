@@ -12,6 +12,7 @@ export const mockState = {
 export const mockProfile: TProfile = {
 	username: 'test user',
 	role: 'member',
+	rating: 1000,
 	created_dt: new Date('2022-01-01T00:00:00Z'),
 };
 
@@ -35,10 +36,8 @@ export const mockUser: User = {
 	providerId: 'firebase',
 };
 
-vi.mock('sveltefire', () => {
-	return {
-		Doc: MockDoc,
-		SignedIn: MockSignedIn,
-		SignedOut: MockSignedOut,
-	};
-});
+vi.mock('sveltefire', () => ({
+	Doc: MockDoc,
+	SignedIn: MockSignedIn,
+	SignedOut: MockSignedOut,
+}));

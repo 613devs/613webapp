@@ -4,6 +4,8 @@ import type { TProfile } from '../../types';
 import { auth, firestore } from '$lib/firebase';
 import { goto } from '$app/navigation';
 
+const INITIAL_RATING = 1000;
+
 export const login = async () => {
 	const userResult = await signInWithPopup(auth, new GoogleAuthProvider());
 
@@ -14,6 +16,7 @@ export const login = async () => {
 		const newProfile: TProfile = {
 			username: userResult.user?.displayName || 'Anonymous',
 			role: 'member',
+			rating: INITIAL_RATING,
 			created_dt: new Date(),
 		};
 		await setDoc(profileRef, newProfile);
