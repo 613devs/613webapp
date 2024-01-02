@@ -1,5 +1,38 @@
-<main>
-	<div class="container mx-auto px-30 py-5 flex flex-col gap-10 min-h-screen">
+<script lang="ts">
+	import { Doc, SignedIn, SignedOut, getFirebaseContext, userStore } from 'sveltefire';
+	import { addDoc, collection, doc, updateDoc } from 'firebase/firestore';
+	import { firestore } from '$lib/firebase';
+
+	const { auth } = getFirebaseContext();
+	const user = userStore(auth!);
+
+	const logMatch = async () => {
+		const matchesRef = collection(firestore, 'matches');
+
+		let winnerUID = 'A';
+		let loserUID = 'B';
+		let winnerRating = 1000;
+		let loserRating = 1000;
+
+		const newMatch = {
+			match_dt: new Date(),
+			winnerUID,
+			loserUID,
+			winnerRating,
+			loserRating,
+		};
+
+		await addDoc(matchesRef, newMatch);
+	};
+</script>
+
+<div class="flex flex-col items-center py-5 px-10 gap-5 min-h-screen bg-base-200">
+	<SignedIn let:user>
+		<button class="btn btn-wide bg-accent-content" on:click={logMatch}>
+			<i class="fa-solid fa-plus fa-lg" />
+		</button>
+	</SignedIn>
+	<div class="w-full px-30 py-5 flex flex-col gap-10 min-h-screen">
 		<div class="bg-accent-content h-80 rounded-badge flex flex-col items-center">
 			<div class="text-center prose my-3">
 				<h3 class="text-4xl">Leaderboard</h3>
@@ -11,4 +44,4 @@
 			</div>
 		</div>
 	</div>
-</main>
+</div>
