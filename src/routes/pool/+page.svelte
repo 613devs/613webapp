@@ -57,7 +57,7 @@
 							<li>
 								<button
 									on:click={() => {
-										winnerName = 'Player A';
+										winnerName = 'Player AA';
 										winnerUsers.removeAttribute('open');
 									}}>Player A</button
 								>
