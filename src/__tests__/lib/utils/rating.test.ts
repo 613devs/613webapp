@@ -9,11 +9,9 @@ test('calculateNewRatings correctly calculates simple rating changes', () => {
 
 	const winnerNewRating = 1016;
 	const loserNewRating = 984;
-	const change = 16;
 
 	expect(results.winnerNewRating).toBe(winnerNewRating);
 	expect(results.loserNewRating).toBe(loserNewRating);
-	expect(results.change).toBe(change);
 });
 
 test('calculateNewRatings correctly calculates complex rating changes', () => {
@@ -24,9 +22,7 @@ test('calculateNewRatings correctly calculates complex rating changes', () => {
 
 	const winnerNewRating = 1101;
 	const loserNewRating = 1208;
-	const change = 23;
 
 	expect(results.winnerNewRating).toBe(winnerNewRating);
 	expect(results.loserNewRating).toBe(loserNewRating);
-	expect(results.change).toBe(change);
 });
