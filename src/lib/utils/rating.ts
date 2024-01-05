@@ -11,6 +11,5 @@ export const calculateRatings = (winnerRating: number, loserRating: number) => {
 	return {
 		winnerNewRating,
 		loserNewRating,
-		change,
 	};
 };

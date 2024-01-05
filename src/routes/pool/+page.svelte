@@ -1,35 +1,58 @@
 <script lang="ts">
 	import { SignedIn } from 'sveltefire';
-	import { addDoc, collection } from 'firebase/firestore';
+	import { addDoc, collection, doc, getDoc, updateDoc } from 'firebase/firestore';
 	import { firestore } from '$lib/firebase';
 	import Modal from '../../lib/components/Modal.svelte';
 	import type { PageData } from './$types';
+	import { calculateRatings } from '$lib/utils/rating';
 
 	export let data: PageData;
 
 	// logging a match
 	let showModal = false;
 	let hideModal = false;
-	let winnerUsers: HTMLDetailsElement;
-	let loserUsers: HTMLDetailsElement;
+	let winnerOptions: HTMLDetailsElement;
+	let loserOptions: HTMLDetailsElement;
 	let winnerName = 'Select a winner';
 	let loserName = 'Select a loser';
+	let winnerUID = '';
+	let loserUID = '';
 
 	const logMatch = async () => {
-		const matchesRef = collection(firestore, 'matches');
+		if (winnerUID !== loserUID && winnerUID !== '' && loserUID !== '') {
+			const winnerRef = doc(firestore, 'profiles', winnerUID);
+			const winnerSnap = await getDoc(winnerRef);
+			const loserRef = doc(firestore, 'profiles', loserUID);
+			const loserSnap = await getDoc(loserRef);
 
-		const newMatch = {
-			match_dt: new Date(),
-			winnerUID: 'A',
-			loserUID: 'B',
-			winnerRating: 1000,
-			loserRating: 1100,
-		};
-		await addDoc(matchesRef, newMatch);
+			if (winnerSnap.exists() && loserSnap.exists()) {
+				const { winnerNewRating, loserNewRating } = calculateRatings(
+					winnerSnap.data().rating,
+					loserSnap.data().rating,
+				);
+				await updateDoc(winnerRef, { rating: winnerNewRating });
+				await updateDoc(loserRef, { rating: loserNewRating });
+				const matchesRef = collection(firestore, 'matches');
+				const newMatch = {
+					match_dt: new Date(),
+					winnerUID,
+					loserUID,
+					winnerRating: winnerNewRating,
+					loserRating: loserNewRating,
+				};
+				await addDoc(matchesRef, newMatch);
+			} else {
+				alert('Internal error. Please try again.');
+			}
+		} else {
+			alert('Please select a winner and a loser.');
+		}
 
 		hideModal = true;
 		winnerName = 'Select a winner';
 		loserName = 'Select a loser';
+		winnerUID = '';
+		loserUID = '';
 	};
 </script>
 
@@ -51,49 +74,39 @@
 			<div class="flex flex-col pt-3 gap-3">
 				<div>
 					<i class="fas fa-crown" />
-					<details class="dropdown" bind:this={winnerUsers}>
+					<details class="dropdown" bind:this={winnerOptions}>
 						<summary class="m-1 btn">{winnerName}</summary>
 						<ul class="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52">
-							<li>
-								<button
-									on:click={() => {
-										winnerName = 'Player A';
-										winnerUsers.removeAttribute('open');
-									}}>Player A</button
-								>
-							</li>
-							<li>
-								<button
-									on:click={() => {
-										winnerName = 'Player B';
-										winnerUsers.removeAttribute('open');
-									}}>Player B</button
-								>
-							</li>
+							{#each data.profiles as profile}
+								<li>
+									<button
+										on:click={() => {
+											winnerName = profile.username;
+											winnerUID = profile.uid;
+											winnerOptions.removeAttribute('open');
+										}}>{profile.username}</button
+									>
+								</li>
+							{/each}
 						</ul>
 					</details>
 				</div>
 				<div>
 					<i class="fas fa-poop" />
-					<details class="dropdown" bind:this={loserUsers}>
+					<details class="dropdown" bind:this={loserOptions}>
 						<summary class="m-1 btn">{loserName}</summary>
 						<ul class="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52">
-							<li>
-								<button
-									on:click={() => {
-										loserName = 'Player A';
-										loserUsers.removeAttribute('open');
-									}}>Player A</button
-								>
-							</li>
-							<li>
-								<button
-									on:click={() => {
-										loserName = 'Player B';
-										loserUsers.removeAttribute('open');
-									}}>Player B</button
-								>
-							</li>
+							{#each data.profiles as profile}
+								<li>
+									<button
+										on:click={() => {
+											loserName = profile.username;
+											loserUID = profile.uid;
+											loserOptions.removeAttribute('open');
+										}}>{profile.username}</button
+									>
+								</li>
+							{/each}
 						</ul>
 					</details>
 				</div>
