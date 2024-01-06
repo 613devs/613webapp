@@ -3,7 +3,6 @@
 	export let hideModal: boolean;
 
 	let dialog: HTMLDialogElement;
-
 	$: if (dialog && showModal) dialog.showModal();
 	$: if (dialog && hideModal) dialog.close();
 </script>
@@ -13,7 +12,7 @@
 	bind:this={dialog}
 	on:close={() => (showModal = false)}
 	on:click|self={() => dialog.close()}
-	class="lg:w-1/3 md:w-1/2 w-3/4 rounded-badge glass p-2 bg-primary-content"
+	class="lg:w-1/3 md:w-1/2 w-3/4 rounded-badge glass p-6 bg-primary-content backdrop:bg-black backdrop:bg-opacity-60"
 >
 	<!-- svelte-ignore a11y-no-static-element-interactions -->
 	<div on:click|stopPropagation>
@@ -28,12 +27,6 @@
 </dialog>
 
 <style>
-	dialog::backdrop {
-		background: rgba(0, 0, 0, 0.7);
-	}
-	dialog > div {
-		padding: 1em;
-	}
 	dialog[open] {
 		animation: zoom 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
 	}

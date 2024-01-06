@@ -19,35 +19,31 @@
 	let loserUID = '';
 
 	const logMatch = async () => {
-		if (winnerUID !== loserUID && winnerUID !== '' && loserUID !== '') {
-			const winnerRef = doc(firestore, 'profiles', winnerUID);
-			const winnerSnap = await getDoc(winnerRef);
-			const loserRef = doc(firestore, 'profiles', loserUID);
-			const loserSnap = await getDoc(loserRef);
+		const winnerRef = doc(firestore, 'profiles', winnerUID);
+		const winnerSnap = await getDoc(winnerRef);
+		const loserRef = doc(firestore, 'profiles', loserUID);
+		const loserSnap = await getDoc(loserRef);
 
-			if (winnerSnap.exists() && loserSnap.exists()) {
-				const { winnerNewRating, loserNewRating } = calculateRatings(
-					winnerSnap.data().rating,
-					loserSnap.data().rating,
-				);
-				await updateDoc(winnerRef, { rating: winnerNewRating });
-				await updateDoc(loserRef, { rating: loserNewRating });
-				const matchesRef = collection(firestore, 'matches');
-				const newMatch = {
-					match_dt: new Date(),
-					winnerUID,
-					loserUID,
-					winnerRating: winnerNewRating,
-					loserRating: loserNewRating,
-					winnerUsername,
-					loserUsername,
-				};
-				await addDoc(matchesRef, newMatch);
-			} else {
-				alert('Internal error. Please try again.');
-			}
+		if (winnerSnap.exists() && loserSnap.exists()) {
+			const { winnerNewRating, loserNewRating } = calculateRatings(
+				winnerSnap.data().rating,
+				loserSnap.data().rating,
+			);
+			await updateDoc(winnerRef, { rating: winnerNewRating });
+			await updateDoc(loserRef, { rating: loserNewRating });
+			const matchesRef = collection(firestore, 'matches');
+			const newMatch = {
+				match_dt: new Date(),
+				winnerUID,
+				loserUID,
+				winnerRating: winnerNewRating,
+				loserRating: loserNewRating,
+				winnerUsername,
+				loserUsername,
+			};
+			await addDoc(matchesRef, newMatch);
 		} else {
-			alert('Please select a winner and a loser.');
+			alert('Internal error. Please try again.');
 		}
 
 		hideModal = true;
@@ -112,7 +108,11 @@
 						</ul>
 					</details>
 				</div>
-				<button on:click={logMatch} class="btn bg-accent-content self-center">Submit</button>
+				<button
+					on:click={logMatch}
+					disabled={winnerUID === loserUID || winnerUID === '' || loserUID === ''}
+					class="btn bg-accent-content self-center">Submit</button
+				>
 			</div>
 		</Modal>
 	</SignedIn>

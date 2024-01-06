@@ -14,7 +14,7 @@ export const login = async () => {
 
 	if (!profileSnap.exists()) {
 		const newProfile: TProfile = {
-			uid: userResult.user?.uid || '',
+			uid: userResult.user!.uid,
 			username: userResult.user?.displayName || 'Anonymous',
 			role: 'member',
 			rating: INITIAL_RATING,
