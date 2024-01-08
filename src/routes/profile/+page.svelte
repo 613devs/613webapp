@@ -8,28 +8,26 @@
 		userStore,
 	} from 'sveltefire';
 	import { logout } from '$lib/utils/auth';
-	import { collection, doc, or, orderBy, query, updateDoc, where } from 'firebase/firestore';
+	import { collection, doc, query, updateDoc, where } from 'firebase/firestore';
 	import { firestore } from '$lib/firebase';
 
 	const { auth } = getFirebaseContext();
 	const user = userStore(auth!);
 
 	const matchesRef = collection(firestore, 'matches');
-	const userMatchesQuery = query(
-		matchesRef,
-		or(where('winnerUID', '==', $user!.uid), where('loserUID', '==', $user!.uid)),
-		orderBy('match_dt', 'desc'),
-	);
-	const userMatches = collectionStore(firestore, userMatchesQuery);
+	const userWinsQuery = query(matchesRef, where('winnerUID', '==', $user!.uid));
+	const userLossesQuery = query(matchesRef, where('loserUID', '==', $user!.uid));
+	const userWins = collectionStore(firestore, userWinsQuery);
+	const userLosses = collectionStore(firestore, userLossesQuery);
 	let userWinCount = 0;
+	let userLossCount = 0;
 	let userMatchCount = 0;
 	let userWinPer = 0;
-	let matchesData = [];
 	$: {
 		// convert userMatches to iterable array
-		matchesData = $userMatches.map((doc) => doc);
-		userWinCount = matchesData.filter((match) => match.winnerUID === $user!.uid).length;
-		userMatchCount = matchesData.length;
+		userWinCount = $userWins.length;
+		userLossCount = $userLosses.length;
+		userMatchCount = userWinCount + userLossCount;
 		userWinPer = userMatchCount > 0 ? Math.round((userWinCount / userMatchCount) * 100) : 0;
 	}
 
