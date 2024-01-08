@@ -1,28 +1,9 @@
 <script lang="ts">
-	import { SignedIn, collectionStore } from 'sveltefire';
-	import {
-		addDoc,
-		collection,
-		query,
-		orderBy,
-		limit,
-		doc,
-		getDoc,
-		updateDoc,
-	} from 'firebase/firestore';
-	import { firestore } from '$lib/firebase';
+	import { SignedIn } from 'sveltefire';
 	import Modal from '../../lib/components/Modal.svelte';
-	import { calculateRatings } from '$lib/utils/rating';
-
-	const QUERY_LIMIT = 10;
-
-	const profilesRef = collection(firestore, 'profiles');
-	const matchesRef = collection(firestore, 'matches');
-	const profileQuery = query(profilesRef, orderBy('rating', 'desc'));
-	const matchesQuery = query(matchesRef, orderBy('match_dt', 'desc'), limit(QUERY_LIMIT));
-
-	const profiles = collectionStore(firestore, profileQuery);
-	const matches = collectionStore(firestore, matchesQuery);
+	import { profilesStore } from '$lib/stores/profilesStore';
+	import { matchesStore } from '$lib/stores/matchesStore';
+	import { logMatch } from '$lib/utils/logMatch';
 
 	// logging a match
 	let showModal = false;
@@ -34,34 +15,8 @@
 	let winnerUID = '';
 	let loserUID = '';
 
-	const logMatch = async () => {
-		const winnerRef = doc(firestore, 'profiles', winnerUID);
-		const winnerSnap = await getDoc(winnerRef);
-		const loserRef = doc(firestore, 'profiles', loserUID);
-		const loserSnap = await getDoc(loserRef);
-
-		if (winnerSnap.exists() && loserSnap.exists()) {
-			const { winnerNewRating, loserNewRating } = calculateRatings(
-				winnerSnap.data().rating,
-				loserSnap.data().rating,
-			);
-			await updateDoc(winnerRef, { rating: winnerNewRating });
-			await updateDoc(loserRef, { rating: loserNewRating });
-			const matchesRef = collection(firestore, 'matches');
-			const newMatch = {
-				match_dt: new Date(),
-				winnerUID,
-				loserUID,
-				winnerRating: winnerNewRating,
-				loserRating: loserNewRating,
-				winnerUsername,
-				loserUsername,
-			};
-			await addDoc(matchesRef, newMatch);
-		} else {
-			alert('Internal error. Please try again.');
-		}
-
+	const handleSubmit = async () => {
+		await logMatch(winnerUID, loserUID, winnerUsername, loserUsername);
 		hideModal = true;
 		winnerUsername = 'Select a winner';
 		loserUsername = 'Select a loser';
@@ -91,7 +46,7 @@
 					<details class="dropdown" bind:this={winnerOptions}>
 						<summary class="m-1 btn">{winnerUsername}</summary>
 						<ul class="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52">
-							{#each $profiles as profile}
+							{#each $profilesStore as profile}
 								<li>
 									<button
 										on:click={() => {
@@ -110,7 +65,7 @@
 					<details class="dropdown" bind:this={loserOptions}>
 						<summary class="m-1 btn">{loserUsername}</summary>
 						<ul class="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52">
-							{#each $profiles as profile}
+							{#each $profilesStore as profile}
 								<li>
 									<button
 										on:click={() => {
@@ -125,7 +80,7 @@
 					</details>
 				</div>
 				<button
-					on:click={logMatch}
+					on:click={handleSubmit}
 					disabled={winnerUID === loserUID || winnerUID === '' || loserUID === ''}
 					class="btn bg-accent-content self-center">Submit</button
 				>
@@ -137,7 +92,7 @@
 			<div class="text-center prose my-3">
 				<h3 class="text-4xl">Leaderboard</h3>
 			</div>
-			{#each $profiles as profile, index}
+			{#each $profilesStore as profile, index}
 				<div
 					class="w-full flex flex-row rounded-box items-center justify-between py-3 px-10 bg-primary-content"
 				>
@@ -153,7 +108,7 @@
 			<div class="text-center prose my-3">
 				<h3 class="text-4xl">Recent Matches</h3>
 			</div>
-			{#each $matches as match}
+			{#each $matchesStore as match}
 				<div
 					class="w-full flex flex-row rounded-box items-center justify-between py-3 px-10 bg-primary-content"
 				>
