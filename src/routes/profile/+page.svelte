@@ -19,12 +19,13 @@
 	const userLossesQuery = query(matchesRef, where('loserUID', '==', $user!.uid));
 	const userWins = collectionStore(firestore, userWinsQuery);
 	const userLosses = collectionStore(firestore, userLossesQuery);
+
 	let userWinCount = 0;
 	let userLossCount = 0;
 	let userMatchCount = 0;
 	let userWinPer = 0;
+
 	$: {
-		// convert userMatches to iterable array
 		userWinCount = $userWins.length;
 		userLossCount = $userLosses.length;
 		userMatchCount = userWinCount + userLossCount;
