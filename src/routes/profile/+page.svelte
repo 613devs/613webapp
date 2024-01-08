@@ -1,11 +1,38 @@
 <script lang="ts">
-	import { Doc, SignedIn, SignedOut, getFirebaseContext, userStore } from 'sveltefire';
+	import {
+		Doc,
+		SignedIn,
+		SignedOut,
+		collectionStore,
+		getFirebaseContext,
+		userStore,
+	} from 'sveltefire';
 	import { logout } from '$lib/utils/auth';
-	import { doc, updateDoc } from 'firebase/firestore';
+	import { collection, doc, or, orderBy, query, updateDoc, where } from 'firebase/firestore';
 	import { firestore } from '$lib/firebase';
+	import type { TMatch } from '../../types';
 
 	const { auth } = getFirebaseContext();
 	const user = userStore(auth!);
+
+	const matchesRef = collection(firestore, 'matches');
+	const userMatchesQuery = query(
+		matchesRef,
+		or(where('winnerUID', '==', $user!.uid), where('loserUID', '==', $user!.uid)),
+		orderBy('match_dt', 'desc'),
+	);
+	const userMatches = collectionStore(firestore, userMatchesQuery);
+	let userWinCount = 0;
+	let userMatchCount = 0;
+	let userWinPer = 0;
+	let matchesData = [];
+	$: {
+		// convert userMatches to iterable array
+		matchesData = $userMatches.map((doc) => doc);
+		userWinCount = matchesData.filter((match) => match.winnerUID === $user!.uid).length;
+		userMatchCount = matchesData.length;
+		userWinPer = userMatchCount > 0 ? Math.round((userWinCount / userMatchCount) * 100) : 0;
+	}
 
 	let isEditingUsername = false;
 	let newUsername = '';
@@ -48,15 +75,15 @@
 			<h3 class="text-3xl font-semibold">Pool Statistics</h3>
 			<div class="w-full flex flex-row justify-between">
 				<div class="flex flex-col w-1/4 items-center p-5 rounded-box bg-primary-content">
-					<h1 class="text-6xl">0</h1>
-					<p>Games Played</p>
-				</div>
-				<div class="flex flex-col w-1/4 items-center p-5 rounded-box bg-primary-content">
-					<h1 class="text-6xl">0</h1>
+					<h1 class="text-6xl">{userWinCount}</h1>
 					<p>Games Won</p>
 				</div>
 				<div class="flex flex-col w-1/4 items-center p-5 rounded-box bg-primary-content">
-					<h1 class="text-6xl">--</h1>
+					<h1 class="text-6xl">{userMatchCount}</h1>
+					<p>Games Played</p>
+				</div>
+				<div class="flex flex-col w-1/4 items-center p-5 rounded-box bg-primary-content">
+					<h1 class="text-6xl">{userWinPer}</h1>
 					<p>Win %</p>
 				</div>
 			</div>
@@ -64,20 +91,6 @@
 		<div class="w-1/2 rounded-badge flex flex-col items-center py-5 bg-accent-content">
 			<h3 class="text-3xl font-semibold">Rating History</h3>
 			<p class="text-xl">graph</p>
-		</div>
-		<div class="w-1/2 rounded-badge flex flex-col items-center py-5 px-10 gap-2 bg-accent-content">
-			<h3 class="text-3xl font-semibold">Recent games</h3>
-			<div class="w-full flex flex-row justify-between px-10 py-3 rounded-box bg-primary-content">
-				<div class="w-1/3 flex items-center justify-center rounded-badge bg-green-300">
-					<p class="text-black font-semibold">Player A (1000)</p>
-				</div>
-				<div class="p-2 rounded-box text-center bg-secondary-content">
-					<p>1 - 0</p>
-				</div>
-				<div class="w-1/3 flex items-center justify-center rounded-badge bg-red-400">
-					<p class="text-black font-semibold">Player B (1000)</p>
-				</div>
-			</div>
 		</div>
 		<button on:click={logout} class="btn bg-accent-content">Log Out</button>
 	</SignedIn>

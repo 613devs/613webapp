@@ -1,12 +1,28 @@
 <script lang="ts">
-	import { SignedIn } from 'sveltefire';
-	import { addDoc, collection, doc, getDoc, updateDoc } from 'firebase/firestore';
+	import { SignedIn, collectionStore } from 'sveltefire';
+	import {
+		addDoc,
+		collection,
+		query,
+		orderBy,
+		limit,
+		doc,
+		getDoc,
+		updateDoc,
+	} from 'firebase/firestore';
 	import { firestore } from '$lib/firebase';
 	import Modal from '../../lib/components/Modal.svelte';
-	import type { PageData } from './$types';
 	import { calculateRatings } from '$lib/utils/rating';
 
-	export let data: PageData;
+	const QUERY_LIMIT = 10;
+
+	const profilesRef = collection(firestore, 'profiles');
+	const matchesRef = collection(firestore, 'matches');
+	const profileQuery = query(profilesRef, orderBy('rating', 'desc'));
+	const matchesQuery = query(matchesRef, orderBy('match_dt', 'desc'), limit(QUERY_LIMIT));
+
+	const profiles = collectionStore(firestore, profileQuery);
+	const matches = collectionStore(firestore, matchesQuery);
 
 	// logging a match
 	let showModal = false;
@@ -75,7 +91,7 @@
 					<details class="dropdown" bind:this={winnerOptions}>
 						<summary class="m-1 btn">{winnerUsername}</summary>
 						<ul class="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52">
-							{#each data.profiles as profile}
+							{#each $profiles as profile}
 								<li>
 									<button
 										on:click={() => {
@@ -94,7 +110,7 @@
 					<details class="dropdown" bind:this={loserOptions}>
 						<summary class="m-1 btn">{loserUsername}</summary>
 						<ul class="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52">
-							{#each data.profiles as profile}
+							{#each $profiles as profile}
 								<li>
 									<button
 										on:click={() => {
@@ -121,7 +137,7 @@
 			<div class="text-center prose my-3">
 				<h3 class="text-4xl">Leaderboard</h3>
 			</div>
-			{#each data.profiles as profile, index}
+			{#each $profiles as profile, index}
 				<div
 					class="w-full flex flex-row rounded-box items-center justify-between py-3 px-10 bg-primary-content"
 				>
@@ -137,7 +153,7 @@
 			<div class="text-center prose my-3">
 				<h3 class="text-4xl">Recent Matches</h3>
 			</div>
-			{#each data.matches as match}
+			{#each $matches as match}
 				<div
 					class="w-full flex flex-row rounded-box items-center justify-between py-3 px-10 bg-primary-content"
 				>
