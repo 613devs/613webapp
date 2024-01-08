@@ -10,7 +10,6 @@
 	import { logout } from '$lib/utils/auth';
 	import { collection, doc, or, orderBy, query, updateDoc, where } from 'firebase/firestore';
 	import { firestore } from '$lib/firebase';
-	import type { TMatch } from '../../types';
 
 	const { auth } = getFirebaseContext();
 	const user = userStore(auth!);
