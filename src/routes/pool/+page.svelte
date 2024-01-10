@@ -24,10 +24,10 @@
 	};
 </script>
 
-<div class="flex flex-col items-center py-5 px-10 gap-5 min-h-screen bg-base-200">
+<div class="flex flex-col w-full gap-5">
 	<SignedIn>
 		<button
-			class="btn btn-wide bg-accent-content"
+			class="btn btn-wide self-center bg-accent-content"
 			on:click={() => {
 				showModal = true;
 				hideModal = false;
@@ -86,9 +86,9 @@
 			</div>
 		</Modal>
 	</SignedIn>
-	<div class="w-full px-30 py-5 flex flex-col gap-10 min-h-screen">
+	<div class="flex flex-col gap-10">
 		<div class="bg-accent-content p-5 rounded-badge flex flex-col gap-3 items-center">
-			<div class="text-center prose my-3">
+			<div class="text-center prose">
 				<h3 class="text-4xl">Leaderboard</h3>
 			</div>
 			{#each $profilesStore as profile, index}
@@ -104,22 +104,22 @@
 			{/each}
 		</div>
 		<div class="bg-accent-content p-5 rounded-badge flex flex-col gap-3 items-center">
-			<div class="text-center prose my-3">
+			<div class="text-center prose">
 				<h3 class="text-4xl">Recent Matches</h3>
 			</div>
 			{#each $matchesStore as match}
 				<div
-					class="w-full flex flex-row rounded-box items-center justify-between py-3 px-10 bg-primary-content"
+					class="w-full flex flex-row rounded-box items-center justify-between p-5 bg-primary-content"
 				>
-					<div class="p-3 rounded-box bg-green-400">
-						<h1 class="text-xl text-black font-semibold">{match.winnerUsername}</h1>
+					<h1 class="text-white">{match.match_dt.toDate().toLocaleDateString()}</h1>
+					<div class="flex flex-row items-center gap-2">
+						<i class="fas fa-crown" />
+						<h1 class="text-xl font-semibold">{match.winnerUsername}</h1>
 					</div>
-					<h1 class="text-xl">beat</h1>
-					<div class="p-3 rounded-box bg-red-400">
-						<h1 class="text-xl text-black font-semibold">{match.loserUsername}</h1>
+					<div class="flex flex-row items-center gap-2">
+						<i class="fas fa-poop" />
+						<h1 class="text-xl font-semibold">{match.loserUsername}</h1>
 					</div>
-					<h1>on</h1>
-					<h1>{match.match_dt.toDate().toLocaleDateString()}</h1>
 				</div>
 			{/each}
 		</div>

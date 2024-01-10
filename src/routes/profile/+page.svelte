@@ -18,9 +18,9 @@
 	};
 </script>
 
-<div class="flex flex-col items-center py-5 gap-5 min-h-screen bg-base-200">
+<div class="flex flex-col items-center w-full gap-5">
 	<SignedIn let:user>
-		<div class="w-1/2 rounded-badge flex flex-col items-center py-5 bg-accent-content">
+		<div class="w-full rounded-badge flex flex-col items-center p-5 bg-accent-content">
 			<Doc ref={`profiles/${user.uid}`} let:data>
 				<div class="flex gap-3">
 					{#if isEditingUsername}
@@ -44,24 +44,36 @@
 				</p>
 			</Doc>
 		</div>
-		<div class="w-1/2 rounded-badge flex flex-col items-center py-5 px-10 gap-2 bg-accent-content">
+		<div class="w-full rounded-badge flex flex-col items-center p-5 gap-2 bg-accent-content">
 			<h3 class="text-3xl font-semibold">Pool Statistics</h3>
-			<div class="w-full flex flex-row justify-between">
-				<div class="flex flex-col w-1/4 items-center p-5 rounded-box bg-primary-content">
-					<h1 class="text-6xl">{data.stats.userWinCount}</h1>
-					<p>Games Won</p>
+			<div class="flex w-full flex-row justify-between items-center gap-2">
+				<div
+					class="flex flex-col w-1/4 md:w-1/6 h-full items-center p-2 rounded-box text-center bg-primary-content"
+				>
+					<h1 class="text-3xl">{data.stats.userWinCount}</h1>
+					<p class="text-xs">Won</p>
 				</div>
-				<div class="flex flex-col w-1/4 items-center p-5 rounded-box bg-primary-content">
-					<h1 class="text-6xl">{data.stats.userMatchCount}</h1>
-					<p>Games Played</p>
+				<div
+					class="flex flex-col w-1/4 md:w-1/6 h-full items-center p-2 rounded-box text-center bg-primary-content"
+				>
+					<h1 class="text-3xl">{data.stats.userMatchCount}</h1>
+					<p class="text-xs">Played</p>
 				</div>
-				<div class="flex flex-col w-1/4 items-center p-5 rounded-box bg-primary-content">
-					<h1 class="text-6xl">{data.stats.userWinPer}</h1>
-					<p>Win %</p>
+				<div
+					class="flex flex-col w-1/4 md:w-1/6 h-full items-center p-2 rounded-box text-center bg-primary-content"
+				>
+					<h1 class="text-3xl">{data.stats.userWinPer}</h1>
+					<p class="text-xs">Win %</p>
+				</div>
+				<div
+					class="flex flex-col w-1/4 md:w-1/6 h-full items-center p-2 rounded-box text-center bg-primary-content"
+				>
+					<h1 class="text-3xl">--</h1>
+					<p class="text-xs">Rating</p>
 				</div>
 			</div>
 		</div>
-		<div class="w-1/2 rounded-badge flex flex-col items-center py-5 bg-accent-content">
+		<div class="w-full rounded-badge flex flex-col items-center p-5 bg-accent-content">
 			<h3 class="text-3xl font-semibold">Rating History</h3>
 			<p class="text-xl">graph</p>
 		</div>
