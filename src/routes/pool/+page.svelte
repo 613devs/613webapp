@@ -5,7 +5,6 @@
 	import { matchesStore } from '$lib/stores/matchesStore';
 	import { logMatch } from '$lib/utils/logMatch';
 
-	// logging a match
 	let showModal = false;
 	let hideModal = false;
 	let winnerOptions: HTMLDetailsElement;

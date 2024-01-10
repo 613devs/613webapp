@@ -1,42 +1,17 @@
 <script lang="ts">
-	import {
-		Doc,
-		SignedIn,
-		SignedOut,
-		collectionStore,
-		getFirebaseContext,
-		userStore,
-	} from 'sveltefire';
+	import { Doc, SignedIn, SignedOut } from 'sveltefire';
 	import { logout } from '$lib/utils/auth';
-	import { collection, doc, query, updateDoc, where } from 'firebase/firestore';
+	import { doc, updateDoc } from 'firebase/firestore';
 	import { firestore } from '$lib/firebase';
+	import type { PageData } from './$types';
 
-	const { auth } = getFirebaseContext();
-	const user = userStore(auth!);
-
-	const matchesRef = collection(firestore, 'matches');
-	const userWinsQuery = query(matchesRef, where('winnerUID', '==', $user!.uid));
-	const userLossesQuery = query(matchesRef, where('loserUID', '==', $user!.uid));
-	const userWins = collectionStore(firestore, userWinsQuery);
-	const userLosses = collectionStore(firestore, userLossesQuery);
-
-	let userWinCount = 0;
-	let userLossCount = 0;
-	let userMatchCount = 0;
-	let userWinPer = 0;
-
-	$: {
-		userWinCount = $userWins.length;
-		userLossCount = $userLosses.length;
-		userMatchCount = userWinCount + userLossCount;
-		userWinPer = userMatchCount > 0 ? Math.round((userWinCount / userMatchCount) * 100) : 0;
-	}
+	export let data: PageData;
 
 	let isEditingUsername = false;
 	let newUsername = '';
 
 	const changeUsername = async () => {
-		const profileRef = doc(firestore, 'profiles', $user!.uid);
+		const profileRef = doc(firestore, `profiles/${data.uid}`);
 		await updateDoc(profileRef, { username: newUsername });
 		isEditingUsername = false;
 		newUsername = '';
@@ -73,15 +48,15 @@
 			<h3 class="text-3xl font-semibold">Pool Statistics</h3>
 			<div class="w-full flex flex-row justify-between">
 				<div class="flex flex-col w-1/4 items-center p-5 rounded-box bg-primary-content">
-					<h1 class="text-6xl">{userWinCount}</h1>
+					<h1 class="text-6xl">{data.stats.userWinCount}</h1>
 					<p>Games Won</p>
 				</div>
 				<div class="flex flex-col w-1/4 items-center p-5 rounded-box bg-primary-content">
-					<h1 class="text-6xl">{userMatchCount}</h1>
+					<h1 class="text-6xl">{data.stats.userMatchCount}</h1>
 					<p>Games Played</p>
 				</div>
 				<div class="flex flex-col w-1/4 items-center p-5 rounded-box bg-primary-content">
-					<h1 class="text-6xl">{userWinPer}</h1>
+					<h1 class="text-6xl">{data.stats.userWinPer}</h1>
 					<p>Win %</p>
 				</div>
 			</div>
