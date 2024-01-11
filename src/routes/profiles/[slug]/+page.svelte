@@ -4,6 +4,9 @@
 	import { doc, updateDoc } from 'firebase/firestore';
 	import { firestore } from '$lib/firebase';
 	import { getUserStats } from '$lib/utils/userStats';
+	import type { PageData } from '../$types';
+
+	export let data: PageData;
 
 	const { auth } = getFirebaseContext();
 	const user = userStore(auth!);
@@ -21,8 +24,8 @@
 
 <div class="flex flex-col items-center w-full gap-5">
 	<SignedIn let:user>
-		{#await getUserStats() then { totalWins, totalGames, winPercentage }}
-			<Doc ref={`profiles/${user.uid}`} let:data>
+		{#await getUserStats(data.uid) then { totalWins, totalGames, winPercentage }}
+			<Doc ref={`profiles/${data.uid}`} let:data>
 				<div class="w-full rounded-badge flex flex-col items-center p-5 bg-accent-content">
 					<div class="flex gap-3">
 						{#if isEditingUsername}
@@ -37,9 +40,11 @@
 						{:else}
 							<h3 class="text-3xl font-semibold">{data.username}</h3>
 						{/if}
-						<button on:click={() => (isEditingUsername = !isEditingUsername)}>
-							<i class="fas fa-edit fa-lg" />
-						</button>
+						{#if user.uid === data.uid}
+							<button on:click={() => (isEditingUsername = !isEditingUsername)}>
+								<i class="fas fa-edit fa-lg" />
+							</button>
+						{/if}
 					</div>
 					<p>
 						{data.role} since {data.created_dt.toDate().toLocaleDateString()}

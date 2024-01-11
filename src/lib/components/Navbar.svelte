@@ -26,7 +26,7 @@
 						{data.username}
 					</span>
 				</p>
-				<a class="btn-circle" href="/profile">
+				<a class="btn-circle" href="/profiles/{user?.uid}">
 					<img src={user?.photoURL} alt={user?.displayName} class="h-12 w-12 rounded-full" />
 				</a>
 				<button on:click={logout} class="btn hidden md:block">Log Out</button>
