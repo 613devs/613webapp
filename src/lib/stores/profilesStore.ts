@@ -5,4 +5,4 @@ import { firestore } from '$lib/firebase';
 const profilesRef = collection(firestore, 'profiles');
 const profileQuery = query(profilesRef, orderBy('rating', 'desc'));
 
-export const profilesStore = collectionStore(firestore, profileQuery);
+export const profiles = collectionStore(firestore, profileQuery);

@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { SignedIn } from 'sveltefire';
 	import Modal from '../../lib/components/Modal.svelte';
-	import { profilesStore } from '$lib/stores/profilesStore';
-	import { matchesStore } from '$lib/stores/matchesStore';
+	import { profiles } from '$lib/stores/profilesStore';
+	import { matches } from '$lib/stores/matchesStore';
 	import { logMatch } from '$lib/utils/logMatch';
 
 	let showModal = false;
@@ -45,7 +45,7 @@
 					<details class="dropdown" bind:this={winnerOptions}>
 						<summary class="m-1 btn">{winnerUsername}</summary>
 						<ul class="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52">
-							{#each $profilesStore as profile}
+							{#each $profiles as profile}
 								<li>
 									<button
 										on:click={() => {
@@ -64,7 +64,7 @@
 					<details class="dropdown" bind:this={loserOptions}>
 						<summary class="m-1 btn">{loserUsername}</summary>
 						<ul class="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52">
-							{#each $profilesStore as profile}
+							{#each $profiles as profile}
 								<li>
 									<button
 										on:click={() => {
@@ -91,7 +91,7 @@
 			<div class="text-center prose">
 				<h3 class="text-4xl">Leaderboard</h3>
 			</div>
-			{#each $profilesStore as profile, index}
+			{#each $profiles as profile, index}
 				<div
 					class="w-full flex flex-row rounded-box items-center justify-between py-3 px-10 bg-primary-content"
 				>
@@ -107,7 +107,7 @@
 			<div class="text-center prose">
 				<h3 class="text-4xl">Recent Matches</h3>
 			</div>
-			{#each $matchesStore as match}
+			{#each $matches as match}
 				<div
 					class="w-full flex flex-row rounded-box items-center justify-between p-5 bg-primary-content"
 				>
