@@ -15,7 +15,6 @@
 
 	<div class="navbar-center space-x-2">
 		<a class="btn" href="/">Home</a>
-		<a class="btn" href="/blog" data-sveltekit-preload-data>Blog</a>
 		<a class="btn" href="/pool" data-sveltekit-preload-data>Pool</a>
 	</div>
 

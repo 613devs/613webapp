@@ -1,14 +1,10 @@
 <script lang="ts">
 	import { SignedIn } from 'sveltefire';
-	import { addDoc, collection, doc, getDoc, updateDoc } from 'firebase/firestore';
-	import { firestore } from '$lib/firebase';
 	import Modal from '../../lib/components/Modal.svelte';
-	import type { PageData } from './$types';
-	import { calculateRatings } from '$lib/utils/rating';
+	import { profiles } from '$lib/stores/profilesStore';
+	import { matches } from '$lib/stores/matchesStore';
+	import { logMatch } from '$lib/utils/logMatch';
 
-	export let data: PageData;
-
-	// logging a match
 	let showModal = false;
 	let hideModal = false;
 	let winnerOptions: HTMLDetailsElement;
@@ -18,34 +14,8 @@
 	let winnerUID = '';
 	let loserUID = '';
 
-	const logMatch = async () => {
-		const winnerRef = doc(firestore, 'profiles', winnerUID);
-		const winnerSnap = await getDoc(winnerRef);
-		const loserRef = doc(firestore, 'profiles', loserUID);
-		const loserSnap = await getDoc(loserRef);
-
-		if (winnerSnap.exists() && loserSnap.exists()) {
-			const { winnerNewRating, loserNewRating } = calculateRatings(
-				winnerSnap.data().rating,
-				loserSnap.data().rating,
-			);
-			await updateDoc(winnerRef, { rating: winnerNewRating });
-			await updateDoc(loserRef, { rating: loserNewRating });
-			const matchesRef = collection(firestore, 'matches');
-			const newMatch = {
-				match_dt: new Date(),
-				winnerUID,
-				loserUID,
-				winnerRating: winnerNewRating,
-				loserRating: loserNewRating,
-				winnerUsername,
-				loserUsername,
-			};
-			await addDoc(matchesRef, newMatch);
-		} else {
-			alert('Internal error. Please try again.');
-		}
-
+	const handleSubmit = async () => {
+		await logMatch(winnerUID, loserUID, winnerUsername, loserUsername);
 		hideModal = true;
 		winnerUsername = 'Select a winner';
 		loserUsername = 'Select a loser';
@@ -54,10 +24,10 @@
 	};
 </script>
 
-<div class="flex flex-col items-center py-5 px-10 gap-5 min-h-screen bg-base-200">
+<div class="flex flex-col w-full gap-5">
 	<SignedIn>
 		<button
-			class="btn btn-wide bg-accent-content"
+			class="btn btn-wide self-center bg-accent-content"
 			on:click={() => {
 				showModal = true;
 				hideModal = false;
@@ -75,7 +45,7 @@
 					<details class="dropdown" bind:this={winnerOptions}>
 						<summary class="m-1 btn">{winnerUsername}</summary>
 						<ul class="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52">
-							{#each data.profiles as profile}
+							{#each $profiles as profile}
 								<li>
 									<button
 										on:click={() => {
@@ -94,7 +64,7 @@
 					<details class="dropdown" bind:this={loserOptions}>
 						<summary class="m-1 btn">{loserUsername}</summary>
 						<ul class="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52">
-							{#each data.profiles as profile}
+							{#each $profiles as profile}
 								<li>
 									<button
 										on:click={() => {
@@ -109,19 +79,19 @@
 					</details>
 				</div>
 				<button
-					on:click={logMatch}
+					on:click={handleSubmit}
 					disabled={winnerUID === loserUID || winnerUID === '' || loserUID === ''}
 					class="btn bg-accent-content self-center">Submit</button
 				>
 			</div>
 		</Modal>
 	</SignedIn>
-	<div class="w-full px-30 py-5 flex flex-col gap-10 min-h-screen">
+	<div class="flex flex-col gap-10">
 		<div class="bg-accent-content p-5 rounded-badge flex flex-col gap-3 items-center">
-			<div class="text-center prose my-3">
+			<div class="text-center prose">
 				<h3 class="text-4xl">Leaderboard</h3>
 			</div>
-			{#each data.profiles as profile, index}
+			{#each $profiles as profile, index}
 				<div
 					class="w-full flex flex-row rounded-box items-center justify-between py-3 px-10 bg-primary-content"
 				>
@@ -134,22 +104,22 @@
 			{/each}
 		</div>
 		<div class="bg-accent-content p-5 rounded-badge flex flex-col gap-3 items-center">
-			<div class="text-center prose my-3">
+			<div class="text-center prose">
 				<h3 class="text-4xl">Recent Matches</h3>
 			</div>
-			{#each data.matches as match}
+			{#each $matches as match}
 				<div
-					class="w-full flex flex-row rounded-box items-center justify-between py-3 px-10 bg-primary-content"
+					class="w-full flex flex-row rounded-box items-center justify-between p-5 bg-primary-content"
 				>
-					<div class="p-3 rounded-box bg-green-400">
-						<h1 class="text-xl text-black font-semibold">{match.winnerUsername}</h1>
+					<h1 class="text-white">{match.match_dt.toDate().toLocaleDateString()}</h1>
+					<div class="flex flex-row items-center gap-2">
+						<i class="fas fa-crown" />
+						<h1 class="text-xl font-semibold">{match.winnerUsername}</h1>
 					</div>
-					<h1 class="text-xl">beat</h1>
-					<div class="p-3 rounded-box bg-red-400">
-						<h1 class="text-xl text-black font-semibold">{match.loserUsername}</h1>
+					<div class="flex flex-row items-center gap-2">
+						<i class="fas fa-poop" />
+						<h1 class="text-xl font-semibold">{match.loserUsername}</h1>
 					</div>
-					<h1>on</h1>
-					<h1>{match.match_dt.toDate().toLocaleDateString()}</h1>
 				</div>
 			{/each}
 		</div>

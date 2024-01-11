@@ -17,6 +17,8 @@
 {:else}
 	<FirebaseApp {firestore} {auth} {rtdb} {storage}>
 		<Navbar />
-		<slot />
+		<div class="flex p-5 min-h-screen bg-base-200">
+			<slot />
+		</div>
 	</FirebaseApp>
 {/if}
