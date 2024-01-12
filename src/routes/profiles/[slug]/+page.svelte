@@ -50,7 +50,7 @@
 						{data.role} since {data.created_dt.toDate().toLocaleDateString()}
 					</p>
 				</div>
-				<div class="w-full rounded-badge flex flex-col items-center p-5 gap-2 bg-accent-content">
+				<div class="w-full rounded-badge flex flex-col items-center p-3 gap-2 bg-accent-content">
 					<h3 class="text-3xl font-semibold">Pool Statistics</h3>
 					<div class="flex w-full flex-row justify-between items-center gap-2">
 						<div
@@ -79,10 +79,10 @@
 						</div>
 					</div>
 				</div>
-				<div class="w-full rounded-badge flex flex-col items-center p-5 bg-accent-content">
+				<!-- <div class="w-full rounded-badge flex flex-col items-center p-5 bg-accent-content">
 					<h3 class="text-3xl font-semibold">Rating History</h3>
 					<p class="text-xl">graph</p>
-				</div>
+				</div> -->
 				<button on:click={logout} class="btn bg-accent-content">Log Out</button>
 			</Doc>
 		{/await}

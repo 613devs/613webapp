@@ -86,6 +86,9 @@
 			</div>
 		</Modal>
 	</SignedIn>
+	<div class="text-center font-bold text-xl text-white">
+		<h1>{$matches.length} Logged Matches</h1>
+	</div>
 	<div class="flex flex-col gap-10">
 		<div class="bg-accent-content p-5 rounded-badge flex flex-col gap-3 items-center">
 			<div class="text-center prose">
@@ -115,11 +118,11 @@
 					<h1 class="text-white">{match.match_dt.toDate().toLocaleDateString()}</h1>
 					<div class="flex flex-row items-center gap-2">
 						<i class="fas fa-crown" />
-						<h1 class="text-xl font-semibold">{match.winnerUsername}</h1>
+						<h1 class="font-semibold">{match.winnerUsername}</h1>
 					</div>
 					<div class="flex flex-row items-center gap-2">
 						<i class="fas fa-poop" />
-						<h1 class="text-xl font-semibold">{match.loserUsername}</h1>
+						<h1 class="font-semibold">{match.loserUsername}</h1>
 					</div>
 				</div>
 			{/each}

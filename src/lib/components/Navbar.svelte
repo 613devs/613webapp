@@ -34,8 +34,8 @@
 		</SignedIn>
 		<SignedOut>
 			<button on:click={login} class="btn">
-				<i class="fa-brands fa-google fa-xl" style="color: #eb4d27;" />
-				Sign In with Google
+				<i class="fa-brands fa-google" style="color: #eb4d27;" />
+				Sign In
 			</button>
 		</SignedOut>
 	</div>
