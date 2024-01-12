@@ -9,8 +9,10 @@
 		<h1 class="font-semibold text-3xl">La Casa de Carne</h1>
 	</div>
 	<div class="text-center">
-		<p class="italic">"Life moves pretty fast. If you don't stop and look around once in a while, you could miss it"</p>
-		<p> - Gandhi</p>
+		<p class="italic">
+			"Life moves pretty fast. If you don't stop and look around once in a while, you could miss it"
+		</p>
+		<p>- Gandhi</p>
 	</div>
 	<div class="rounded-box sm:w-1/2">
 		<img src={house1} alt="Some boss bitches" />
