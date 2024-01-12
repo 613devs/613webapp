@@ -2,14 +2,11 @@ import { auth, firestore } from '$lib/firebase';
 import { collection, getDocs, or, orderBy, query, where } from 'firebase/firestore';
 import type { TMatch } from '../../types';
 
-export const getUserStats = async () => {
+export const getUserStats = async (uid: string) => {
 	const matchesRef = collection(firestore, 'matches');
 	const userMatchesQuery = query(
 		matchesRef,
-		or(
-			where('winnerUID', '==', auth.currentUser!.uid),
-			where('loserUID', '==', auth.currentUser!.uid),
-		),
+		or(where('winnerUID', '==', uid), where('loserUID', '==', uid)),
 		orderBy('match_dt', 'desc'),
 	);
 	const userMatchesSnapshot = await getDocs(userMatchesQuery);

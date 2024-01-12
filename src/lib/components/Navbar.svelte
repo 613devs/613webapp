@@ -26,7 +26,7 @@
 						{data.username}
 					</span>
 				</p>
-				<a class="btn-circle" href="/profile">
+				<a class="btn-circle" href="/profiles/{user?.uid}">
 					<img src={user?.photoURL} alt={user?.displayName} class="h-12 w-12 rounded-full" />
 				</a>
 				<button on:click={logout} class="btn hidden md:block">Log Out</button>
@@ -34,8 +34,8 @@
 		</SignedIn>
 		<SignedOut>
 			<button on:click={login} class="btn">
-				<i class="fa-brands fa-google fa-xl" style="color: #eb4d27;" />
-				Sign In with Google
+				<i class="fa-brands fa-google" style="color: #eb4d27;" />
+				Sign In
 			</button>
 		</SignedOut>
 	</div>
