@@ -1,4 +1,4 @@
-import { auth, firestore } from '$lib/firebase';
+import { firestore } from '$lib/firebase';
 import { collection, getDocs, or, orderBy, query, where } from 'firebase/firestore';
 import type { TMatch } from '../../types';
 
@@ -16,7 +16,7 @@ export const getUserStats = async (uid: string) => {
 	let winPercentage = 0;
 	const totalGames = userMatches.length;
 	userMatches.forEach((match) => {
-		if (match.winnerUID === auth.currentUser!.uid) {
+		if (match.winnerUID === uid) {
 			totalWins++;
 		}
 	});
