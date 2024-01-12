@@ -1,5 +1,15 @@
 {
   "projects": {
     "default": "web-app-b6c2d"
-  }
+  },
+  "targets": {
+    "web-app-b6c2d": {
+      "hosting": {
+        "prod": [
+          "stanford613"
+        ]
+      }
+    }
+  },
+  "etags": {}
 }
