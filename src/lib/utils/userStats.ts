@@ -21,7 +21,7 @@ export const getUserStats = async (uid: string) => {
 		}
 	});
 	if (totalGames > 0) {
-		winPercentage = (totalWins / totalGames) * 100;
+		winPercentage = parseFloat(((totalWins / totalGames) * 100).toFixed(2));
 	}
 	return {
 		totalWins,
