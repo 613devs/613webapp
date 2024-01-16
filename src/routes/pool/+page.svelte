@@ -13,9 +13,18 @@
 	let loserUsername = 'Select a loser';
 	let winnerUID = '';
 	let loserUID = '';
+	let isSubmitting = false;
 
 	const handleSubmit = async () => {
-		await logMatch(winnerUID, loserUID, winnerUsername, loserUsername);
+		if (isSubmitting) return;
+		isSubmitting = true;
+		try {
+			await logMatch(winnerUID, loserUID, winnerUsername, loserUsername);
+		} catch (error) {
+			console.log(error);
+		} finally {
+			isSubmitting = false;
+		}
 		hideModal = true;
 		winnerUsername = 'Select a winner';
 		loserUsername = 'Select a loser';
@@ -80,7 +89,7 @@
 				</div>
 				<button
 					on:click={handleSubmit}
-					disabled={winnerUID === loserUID || winnerUID === '' || loserUID === ''}
+					disabled={winnerUID === loserUID || winnerUID === '' || loserUID === '' || isSubmitting}
 					class="btn bg-accent-content self-center">Submit</button
 				>
 			</div>
