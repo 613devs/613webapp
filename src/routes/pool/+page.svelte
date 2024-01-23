@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { SignedIn } from 'sveltefire';
-	import Modal from '../../lib/components/Modal.svelte';
+	import LogMatchModal from '$lib/components/LogMatchModal.svelte';
 	import { profiles } from '$lib/stores/profilesStore';
 	import { matches } from '$lib/stores/matchesStore';
 	import { logMatch } from '$lib/utils/logMatch';
@@ -19,7 +19,7 @@
 		if (isSubmitting) return;
 		isSubmitting = true;
 		try {
-			await logMatch(winnerUID, loserUID, winnerUsername, loserUsername);
+			await logMatch(winnerUID, loserUID);
 		} catch (error) {
 			console.log(error);
 		} finally {
@@ -44,7 +44,7 @@
 		>
 			<i class="fa-solid fa-plus fa-lg" />
 		</button>
-		<Modal bind:showModal bind:hideModal>
+		<LogMatchModal bind:showModal bind:hideModal>
 			<div slot="header">
 				<h3 class="text-2xl">Match Results</h3>
 			</div>
@@ -93,7 +93,7 @@
 					class="btn bg-accent-content self-center">Submit</button
 				>
 			</div>
-		</Modal>
+		</LogMatchModal>
 	</SignedIn>
 	<div class="text-center font-bold text-xl text-white">
 		<h1>{$matches.length} Logged Matches</h1>

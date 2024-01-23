@@ -1,28 +1,9 @@
-import { calculateRatings } from '$lib/utils/rating';
+import { calculateRatingChange } from '$lib/utils/rating';
 import { expect, test } from 'vitest';
 
-test('calculateNewRatings correctly calculates simple rating changes', () => {
-	const winnerRating = 1000;
-	const loserRating = 1000;
-
-	const results = calculateRatings(winnerRating, loserRating);
-
-	const winnerNewRating = 1016;
-	const loserNewRating = 984;
-
-	expect(results.winnerNewRating).toBe(winnerNewRating);
-	expect(results.loserNewRating).toBe(loserNewRating);
-});
-
-test('calculateNewRatings correctly calculates complex rating changes', () => {
-	const winnerRating = 1078;
-	const loserRating = 1231;
-
-	const results = calculateRatings(winnerRating, loserRating);
-
-	const winnerNewRating = 1101;
-	const loserNewRating = 1208;
-
-	expect(results.winnerNewRating).toBe(winnerNewRating);
-	expect(results.loserNewRating).toBe(loserNewRating);
+test('calculateRatingChange', () => {
+	expect(calculateRatingChange(1000, 1000)).toBe(50); // average
+	expect(calculateRatingChange(0, 466)).toBe(75); // upper bound
+	expect(calculateRatingChange(1000, 534)).toBe(25); // lower bound
+	expect(calculateRatingChange(1000, 5)).toBe(5); // lose at 0 case
 });

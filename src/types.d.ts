@@ -9,9 +9,12 @@ export type TProfile = {
 export type TMatch = {
 	match_dt: Date;
 	winnerUID: string;
+	winner2UID?: string;
 	loserUID: string;
-	winnerRating: number;
-	loserRating: number;
+	loser2UID?: string;
+	change: number;
 	winnerUsername: string;
+	winner2Username?: string;
 	loserUsername: string;
+	loser2Username?: string;
 };
