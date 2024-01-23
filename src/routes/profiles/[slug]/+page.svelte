@@ -4,7 +4,7 @@
 	import { doc, updateDoc } from 'firebase/firestore';
 	import { firestore } from '$lib/firebase';
 	import { getUserStats } from '$lib/utils/userStats';
-	import type { PageData } from '../$types';
+	import type { PageData } from './$types';
 
 	export let data: PageData;
 
