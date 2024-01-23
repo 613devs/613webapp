@@ -1,100 +1,11 @@
 <script lang="ts">
-	import { SignedIn } from 'sveltefire';
-	import LogMatchModal from '$lib/components/LogMatchModal.svelte';
 	import { profiles } from '$lib/stores/profilesStore';
 	import { matches } from '$lib/stores/matchesStore';
-	import { logMatch } from '$lib/utils/logMatch';
-
-	let showModal = false;
-	let hideModal = false;
-	let winnerOptions: HTMLDetailsElement;
-	let loserOptions: HTMLDetailsElement;
-	let winnerUsername = 'Select a winner';
-	let loserUsername = 'Select a loser';
-	let winnerUID = '';
-	let loserUID = '';
-	let isSubmitting = false;
-
-	const handleSubmit = async () => {
-		if (isSubmitting) return;
-		isSubmitting = true;
-		try {
-			await logMatch(winnerUID, loserUID);
-		} catch (error) {
-			console.log(error);
-		} finally {
-			isSubmitting = false;
-		}
-		hideModal = true;
-		winnerUsername = 'Select a winner';
-		loserUsername = 'Select a loser';
-		winnerUID = '';
-		loserUID = '';
-	};
+	import LogMatchButton from '$lib/components/LogMatchButton.svelte';
 </script>
 
 <div class="flex flex-col w-full gap-5">
-	<SignedIn>
-		<button
-			class="btn btn-wide self-center bg-accent-content"
-			on:click={() => {
-				showModal = true;
-				hideModal = false;
-			}}
-		>
-			<i class="fa-solid fa-plus fa-lg" />
-		</button>
-		<LogMatchModal bind:showModal bind:hideModal>
-			<div slot="header">
-				<h3 class="text-2xl">Match Results</h3>
-			</div>
-			<div class="flex flex-col pt-3 gap-3">
-				<div>
-					<i class="fas fa-crown" />
-					<details class="dropdown" bind:this={winnerOptions}>
-						<summary class="m-1 btn">{winnerUsername}</summary>
-						<ul class="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52">
-							{#each $profiles as profile}
-								<li>
-									<button
-										on:click={() => {
-											winnerUsername = profile.username;
-											winnerUID = profile.uid;
-											winnerOptions.removeAttribute('open');
-										}}>{profile.username}</button
-									>
-								</li>
-							{/each}
-						</ul>
-					</details>
-				</div>
-				<div>
-					<i class="fas fa-poop" />
-					<details class="dropdown" bind:this={loserOptions}>
-						<summary class="m-1 btn">{loserUsername}</summary>
-						<ul class="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52">
-							{#each $profiles as profile}
-								<li>
-									<button
-										on:click={() => {
-											loserUsername = profile.username;
-											loserUID = profile.uid;
-											loserOptions.removeAttribute('open');
-										}}>{profile.username}</button
-									>
-								</li>
-							{/each}
-						</ul>
-					</details>
-				</div>
-				<button
-					on:click={handleSubmit}
-					disabled={winnerUID === loserUID || winnerUID === '' || loserUID === '' || isSubmitting}
-					class="btn bg-accent-content self-center">Submit</button
-				>
-			</div>
-		</LogMatchModal>
-	</SignedIn>
+	<LogMatchButton />
 	<div class="text-center font-bold text-xl text-white">
 		<h1>{$matches.length} Logged Matches</h1>
 	</div>
@@ -128,10 +39,16 @@
 					<div class="flex flex-row items-center gap-2">
 						<i class="fas fa-crown" />
 						<h1 class="font-semibold">{match.winnerUsername}</h1>
+						{#if match.winner2Username}
+							<h1 class="font-semibold">& {match.winner2Username}</h1>
+						{/if}
 					</div>
 					<div class="flex flex-row items-center gap-2">
 						<i class="fas fa-poop" />
 						<h1 class="font-semibold">{match.loserUsername}</h1>
+						{#if match.loser2Username}
+							<h1 class="font-semibold">& {match.loser2Username ?? ''}</h1>
+						{/if}
 					</div>
 				</div>
 			{/each}

@@ -6,7 +6,12 @@ export const getUserStats = async (uid: string) => {
 	const matchesRef = collection(firestore, 'matches');
 	const userMatchesQuery = query(
 		matchesRef,
-		or(where('winnerUID', '==', uid), where('loserUID', '==', uid)),
+		or(
+			where('winnerUID', '==', uid),
+			where('loserUID', '==', uid),
+			where('winner2UID', '==', uid),
+			where('loser2UID', '==', uid),
+		),
 		orderBy('match_dt', 'desc'),
 	);
 	const userMatchesSnapshot = await getDocs(userMatchesQuery);
@@ -16,7 +21,7 @@ export const getUserStats = async (uid: string) => {
 	let winPercentage = 0;
 	const totalGames = userMatches.length;
 	userMatches.forEach((match) => {
-		if (match.winnerUID === uid) {
+		if (match.winnerUID === uid || match.winner2UID === uid) {
 			totalWins++;
 		}
 	});

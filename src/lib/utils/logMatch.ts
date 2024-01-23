@@ -49,7 +49,7 @@ export const logDuoMatch = async (winnerUIDs: [string, string], loserUIDs: [stri
 		const winnerAverage = winnerRatings.reduce((acc, cur) => acc + cur, 0) / 2;
 		const loserAverage = loserRatings.reduce((acc, cur) => acc + cur, 0) / 2;
 
-		const change = calculateRatingChange(winnerAverage, loserAverage) / 2;
+		const change = Math.round(calculateRatingChange(winnerAverage, loserAverage) / 2);
 		const winnerNewRatings = winnerRatings.map((rating) => rating + change);
 		const loserNewRatings = loserRatings.map((rating) => rating - change);
 

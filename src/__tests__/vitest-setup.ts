@@ -10,6 +10,7 @@ export const mockState = {
 };
 
 export const mockProfile: TProfile = {
+	uid: '',
 	username: 'test user',
 	role: 'member',
 	rating: 1000,
