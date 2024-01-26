@@ -1,4 +1,41 @@
 {
-	"indexes": [],
+	"indexes": [
+		{
+			"collectionGroup": "matches",
+			"queryScope": "COLLECTION",
+			"fields": [
+				{ "fieldPath": "loser2UID", "order": "ASCENDING" },
+				{ "fieldPath": "match_dt", "order": "DESCENDING" },
+				{ "fieldPath": "__name__", "order": "DESCENDING" }
+			]
+		},
+		{
+			"collectionGroup": "matches",
+			"queryScope": "COLLECTION",
+			"fields": [
+				{ "fieldPath": "winnerUID", "order": "ASCENDING" },
+				{ "fieldPath": "match_dt", "order": "DESCENDING" },
+				{ "fieldPath": "__name__", "order": "DESCENDING" }
+			]
+		},
+		{
+			"collectionGroup": "matches",
+			"queryScope": "COLLECTION",
+			"fields": [
+				{ "fieldPath": "loserUID", "order": "ASCENDING" },
+				{ "fieldPath": "match_dt", "order": "DESCENDING" },
+				{ "fieldPath": "__name__", "order": "DESCENDING" }
+			]
+		},
+		{
+			"collectionGroup": "matches",
+			"queryScope": "COLLECTION",
+			"fields": [
+				{ "fieldPath": "winner2UID", "order": "ASCENDING" },
+				{ "fieldPath": "match_dt", "order": "DESCENDING" },
+				{ "fieldPath": "__name__", "order": "DESCENDING" }
+			]
+		}
+	],
 	"fieldOverrides": []
 }

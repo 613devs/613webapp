@@ -38,16 +38,24 @@
 					<h1 class="text-white">{match.match_dt.toDate().toLocaleDateString()}</h1>
 					<div class="flex flex-row items-center gap-2">
 						<i class="fas fa-crown" />
-						<h1 class="font-semibold">{match.winnerUsername}</h1>
 						{#if match.winner2Username}
-							<h1 class="font-semibold">& {match.winner2Username}</h1>
+							<div class="flex flex-col">
+								<h1 class="font-semibold">{match.winnerUsername.split(' ')[0]}</h1>
+								<h1 class="font-semibold">{match.winner2Username.split(' ')[0]}</h1>
+							</div>
+						{:else}
+							<h1 class="font-semibold">{match.winnerUsername}</h1>
 						{/if}
 					</div>
 					<div class="flex flex-row items-center gap-2">
 						<i class="fas fa-poop" />
-						<h1 class="font-semibold">{match.loserUsername}</h1>
 						{#if match.loser2Username}
-							<h1 class="font-semibold">& {match.loser2Username ?? ''}</h1>
+							<div class="flex flex-col">
+								<h1 class="font-semibold">{match.loserUsername.split(' ')[0]}</h1>
+								<h1 class="font-semibold">{match.loser2Username.split(' ')[0]}</h1>
+							</div>
+						{:else}
+							<h1 class="font-semibold">{match.loserUsername}</h1>
 						{/if}
 					</div>
 				</div>
